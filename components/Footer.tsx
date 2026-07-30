@@ -85,11 +85,21 @@ const Footer: React.FC<FooterProps> = ({ onPortalClick }) => {
         </div>
       </div>
       
-      <div className="max-w-7xl mx-auto mt-24 pt-8 border-t border-stone-900 flex justify-between items-center text-stone-700 text-[9px] uppercase tracking-[0.3em]">
-        <div>© 2025 Legacy Athlete Inc.</div>
-        <div className="space-x-8">
-          <a href="#" className="hover:text-stone-400">Privacy</a>
-          <a href="#" className="hover:text-stone-400">Terms</a>
+      <div className="max-w-7xl mx-auto mt-24 pt-8 border-t border-stone-900 flex flex-col lg:flex-row justify-between items-start gap-8 text-stone-700 text-[9px] uppercase tracking-[0.3em]">
+        <div className="max-w-3xl space-y-4">
+          <p className="text-stone-600 font-bold">
+            © {new Date().getFullYear()} THE LEGACY ATHLETE™. ALL RIGHTS RESERVED. REGISTERED TRADEMARK OF THE LEGACY CO.
+          </p>
+          <p className="leading-relaxed text-stone-500 normal-case tracking-normal text-[10px]">
+            <strong>INTELLECTUAL PROPERTY &amp; COPYRIGHT WARNING:</strong> All curriculum materials, physical athletic protocols, basketball skill sequencing systems, mechanical feedback algorithms, training session diagrams, proprietary benchmarks, and digital/interactive metrics displayed on this platform are copyrighted trade secrets of The Legacy Co.
+          </p>
+          <p className="leading-relaxed text-stone-500 normal-case tracking-normal text-[10px]">
+            Unauthorized copying, distribution, video recording, public transmission, coaching replication, or commercial duplication of these elite development programs is strictly prohibited by law. Violators will be prosecuted to the maximum extent of the law under federal and international trademark and copyright enforcement statutes.
+          </p>
+        </div>
+        <div className="space-x-8 shrink-0">
+          <a href="#" className="hover:text-stone-400">Privacy Policy</a>
+          <a href="#" className="hover:text-stone-400">Terms of Use</a>
         </div>
       </div>
     </footer>

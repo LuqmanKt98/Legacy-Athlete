@@ -125,7 +125,7 @@ const Programs: React.FC = () => {
           ))}
         </div>
 
-        <div id="weekly-schedule" className="schedule-container border-t border-stone-900 pt-20 scroll-mt-32">
+        <div id="weekly-schedule" className="schedule-container border-t border-stone-900 pt-20 scroll-mt-40">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12">
                <div>
                   <span className="text-[10px] tracking-[0.4em] text-orange-600 uppercase mb-4 block">Spring Schedule • 3/30 – 5/31</span>

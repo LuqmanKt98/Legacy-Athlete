@@ -89,24 +89,24 @@ export const STATS: Stat[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
-    name: "Marcus Thorne",
-    role: "Professional Guard",
-    content: "Legacy is simple but effective. No hype, just work. The focus on mental clarity changed my game in the 4th quarter.",
-    avatar: "https://i.pravatar.cc/150?u=marcus"
+    name: "Matt V.",
+    role: "Parent",
+    content: "Coach Mark has taught my son the fundamentals and built his confidence by strengthening his body. The results are easy to see.",
   },
   {
     id: 2,
-    name: "Sarah Jenkins",
-    role: "D1 College Commit",
-    content: "This program changed my life. It wasn't just about my jump shot—it was about how I move and the discipline I now carry off the court.",
-    avatar: "https://i.pravatar.cc/150?u=sarah"
+    // No attribution provided yet — card renders without a byline.
+    name: "",
+    role: "",
+    content: "The Legacy program not only focuses on building skills, but sharpening mental fortitude and problem solving. The practice translates to the game seamlessly.",
   },
   {
+    // Pending client copy (per 2026-07 brief: "waiting on response from client, will update").
+    // Left as prior placeholder content until real copy arrives — do not fabricate a replacement.
     id: 3,
     name: "Coach David Rossi",
     role: "Player Development",
     content: "Finally, a system that values the details. They cut through the social media noise and focus on what actually wins games.",
-    avatar: "https://i.pravatar.cc/150?u=coach"
   }
 ];
 
@@ -187,9 +187,9 @@ export const PRICING_TIERS: PricingTier[] = [
   },
   {
     id: 'end-summer-camp',
-    name: 'END OF SUMMER CAMP',
+    name: 'HOLIDAY CAMP',
     price: '75',
-    description: 'Mon, Sep 7 (Labor Day) • 9AM–3PM',
+    description: 'Single-day training • 9AM–3PM • Pick a date above',
     features: [
       'One-Day Camp',
       'Skill + Performance Training',
@@ -197,5 +197,18 @@ export const PRICING_TIERS: PricingTier[] = [
     ],
     recommended: false,
     cta: 'RSVP'
+  },
+  {
+    id: 'fall-3v3',
+    name: 'FALL 3V3 LEAGUE',
+    price: '195',
+    description: '6 Weeks: Sept 25 – Oct 30, 2026 • Flat Rate / Player',
+    features: [
+      '5 Weeks of Competitive Doubleheaders',
+      '1 Week Single-Elimination Playoffs',
+      'Includes Reversible Team Jersey'
+    ],
+    recommended: false,
+    cta: 'Register'
   }
 ];

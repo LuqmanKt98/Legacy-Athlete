@@ -55,7 +55,7 @@ const WhyLegacyAthlete: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="why-legacy" className="py-32 px-8 bg-black relative border-t border-stone-900 scroll-mt-32">
+    <section ref={sectionRef} id="why-legacy" className="py-32 px-8 bg-black relative border-t border-stone-900 scroll-mt-40">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <span className="text-[10px] tracking-[0.4em] text-orange-500 uppercase block mb-4">Our Approach</span>

@@ -53,12 +53,12 @@ const QuickAccessHub: React.FC<QuickAccessHubProps> = ({ isLoggedIn, onMemberAre
       icon: <Sun className="w-6 h-6" />,
       title: 'Camps',
       desc: 'Upcoming camps & cohort dates',
-      onClick: () => scrollTo('summer-camp'),
+      onClick: () => scrollTo('holiday-camps'),
     },
   ];
 
   return (
-    <section id="members" className="py-24 px-8 bg-black border-b border-stone-900 scroll-mt-32">
+    <section id="members" className="py-24 px-8 bg-black border-b border-stone-900 scroll-mt-40">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>

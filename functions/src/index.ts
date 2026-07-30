@@ -812,7 +812,8 @@ const PLAN_PRICES_CENTS: Record<string, number> = {
   "camp-weekly":     24900,   // $249
   "camp-early-bird": 22900,   // $229
   "camp-day-pass":    6500,   // $65
-  "end-summer-camp":  7500,   // $75 — one-day Labor Day event RSVP
+  "end-summer-camp":  7500,   // $75 — flat rate shared by every Holiday Camp date
+  "fall-3v3":        19500,   // $195 — Fall 3v3 League, 6-week flat enrollment
 };
 
 const PERFORMANCE_ADDON_CENTS: Record<string, number> = {

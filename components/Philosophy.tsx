@@ -23,7 +23,7 @@ const Philosophy: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="mission" className="py-32 px-8 bg-stone-950 relative overflow-hidden scroll-mt-32">
+    <section ref={sectionRef} id="mission" className="py-32 px-8 bg-stone-950 relative overflow-hidden scroll-mt-40">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
         
         {/* Philosophy Column */}

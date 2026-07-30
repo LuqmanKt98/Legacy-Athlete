@@ -48,13 +48,12 @@ const Testimonials: React.FC = () => {
                 </div>
                 <p className="text-stone-300 text-sm italic leading-relaxed mb-8">"{t.content}"</p>
               </div>
-              <div className="flex items-center space-x-4">
-                <img src={t.avatar} alt={t.name} className="w-10 h-10 rounded-full grayscale border border-stone-700" />
+              {t.name && (
                 <div>
                   <h4 className="font-athletic text-sm text-white">{t.name}</h4>
                   <p className="text-[10px] uppercase tracking-widest text-stone-500">{t.role}</p>
                 </div>
-              </div>
+              )}
             </div>
           ))}
         </div>

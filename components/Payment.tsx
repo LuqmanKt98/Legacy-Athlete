@@ -15,6 +15,9 @@ const stripePromise = stripeKey ? loadStripe(stripeKey) : null;
 const API_BASE = import.meta.env.VITE_FUNCTIONS_URL || "";
 const getApiUrl = (endpoint: string) => API_BASE ? `${API_BASE}/${endpoint}` : `/api/${endpoint}`;
 
+// One-time flat-rate products — no monthly billing, add-ons, or 8-week bundling apply.
+const FLAT_RATE_PLAN_IDS = new Set(['end-summer-camp', 'fall-3v3']);
+
 const CheckoutForm = ({ amount, onSuccess }: { amount: number, onSuccess: (id: string) => void }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -101,13 +104,17 @@ const CheckoutForm = ({ amount, onSuccess }: { amount: number, onSuccess: (id: s
 
 interface PaymentProps {
   initialPlanId?: string;
+  /** Overrides the plan's generic display name — used when several distinct events
+   *  (e.g. every Holiday Camp date) share one flat-rate plan id. */
+  initialEventLabel?: string;
   onLoginRequired: () => void;
 }
 
-const Payment: React.FC<PaymentProps> = ({ initialPlanId, onLoginRequired }) => {
+const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onLoginRequired }) => {
   const { user } = useAuth();
   const recommendedPlan = PRICING_TIERS.find(t => t.recommended) || PRICING_TIERS[0];
   const [selectedPlanId, setSelectedPlanId] = useState(initialPlanId || recommendedPlan.id);
+  const [eventLabel, setEventLabel] = useState(initialEventLabel);
   const [addPerformance, setAddPerformance] = useState(false);
   const [is8WeekBundle, setIs8WeekBundle] = useState(false);
 
@@ -125,17 +132,19 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, onLoginRequired }) => 
   const handlePlanSelect = (planId: string) => {
     if (!user) { onLoginRequired(); return; }
     setSelectedPlanId(planId);
+    setEventLabel(undefined); // manual tier pick — drop any stale camp-date label
   };
 
   useEffect(() => {
     if (initialPlanId) {
       setSelectedPlanId(initialPlanId);
+      setEventLabel(initialEventLabel);
     }
-  }, [initialPlanId]);
+  }, [initialPlanId, initialEventLabel]);
 
   // Event RSVP is a flat one-time charge — clear any add-on/bundle selections.
   useEffect(() => {
-    if (selectedPlanId === 'end-summer-camp') {
+    if (FLAT_RATE_PLAN_IDS.has(selectedPlanId)) {
       setAddPerformance(false);
       setIs8WeekBundle(false);
     }
@@ -143,7 +152,10 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, onLoginRequired }) => 
 
   const selectedPlan = PRICING_TIERS.find(t => t.id === selectedPlanId) || recommendedPlan;
   // One-time event RSVP — no monthly billing, add-ons, or bundles apply.
-  const isEvent = selectedPlan.id === 'end-summer-camp';
+  const isEvent = FLAT_RATE_PLAN_IDS.has(selectedPlan.id);
+  // Several distinct camp dates share the 'end-summer-camp' plan id — eventLabel
+  // carries the specific one chosen so the UI and confirmation email are accurate.
+  const displayName = eventLabel || selectedPlan.name;
 
   // Calculate totals
   const basePrice = parseFloat(selectedPlan.price);
@@ -244,7 +256,7 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, onLoginRequired }) => 
           },
           body: JSON.stringify({
             email,
-            planName: selectedPlan.name,
+            planName: displayName,
             amount: serverTotal ?? total, // prefer server-authoritative total
             transactionId: id,
             addons,
@@ -271,14 +283,14 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, onLoginRequired }) => 
             </div>
             <h2 className="font-athletic text-3xl text-white mb-2">ENROLLMENT CONFIRMED</h2>
             <p className="text-stone-500 text-[10px] uppercase tracking-widest">
-              Your spot in the {selectedPlan.name} cohort is secured.
+              {isEvent ? `Your spot for ${displayName} is secured.` : `Your spot in the ${displayName} cohort is secured.`}
             </p>
           </div>
 
           <div className="space-y-4 mb-10 border-t border-b border-stone-800 py-8 bg-black/20 -mx-8 px-8">
             <div className="flex justify-between items-center">
               <span className="text-[10px] text-stone-500 uppercase tracking-widest">Selected Plan</span>
-              <span className="font-athletic text-white text-lg">{selectedPlan.name}</span>
+              <span className="font-athletic text-white text-lg">{displayName}</span>
             </div>
             {addPerformance && (
               <div className="flex justify-between items-center">
@@ -353,7 +365,7 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, onLoginRequired }) => 
                 >
                   {PRICING_TIERS.map(tier => (
                     <option key={tier.id} value={tier.id}>
-                      {tier.name} - ${tier.price}{tier.id !== 'drop-in' && tier.id !== 'end-summer-camp' ? '/mo' : ''}
+                      {tier.name} - ${tier.price}{tier.id !== 'drop-in' && !FLAT_RATE_PLAN_IDS.has(tier.id) ? '/mo' : ''}
                     </option>
                   ))}
                 </select>

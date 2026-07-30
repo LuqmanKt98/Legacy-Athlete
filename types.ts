@@ -23,10 +23,10 @@ export interface Stat {
 
 export interface Testimonial {
   id: number;
+  /** Empty string when attribution hasn't been provided yet — renders without a byline. */
   name: string;
   role: string;
   content: string;
-  avatar: string;
 }
 
 export interface PricingTier {

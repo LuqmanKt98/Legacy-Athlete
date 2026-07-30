@@ -25,7 +25,7 @@ const SocialProof: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="results" className="py-28 px-8 bg-black border-b border-stone-900 relative overflow-hidden scroll-mt-32">
+    <section ref={sectionRef} id="results" className="py-28 px-8 bg-black border-b border-stone-900 relative overflow-hidden scroll-mt-40">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(234,88,12,0.05)_0%,transparent_50%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto">
@@ -41,13 +41,12 @@ const SocialProof: React.FC = () => {
                 <Quote className="w-6 h-6 text-orange-600/40 mb-4" />
                 <p className="text-stone-300 text-sm leading-relaxed mb-6">{t.content}</p>
               </div>
-              <div className="flex items-center space-x-3 pt-4 border-t border-stone-800">
-                <img src={t.avatar} alt={t.name} className="w-9 h-9 rounded-full grayscale opacity-80" />
-                <div>
+              {t.name && (
+                <div className="pt-4 border-t border-stone-800">
                   <p className="text-white text-xs uppercase tracking-widest font-medium">{t.name}</p>
                   <p className="text-stone-500 text-[10px] uppercase tracking-widest">{t.role}</p>
                 </div>
-              </div>
+              )}
             </div>
           ))}
         </div>

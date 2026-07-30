@@ -3,7 +3,7 @@ import { MapPin, DoorOpen, Car } from 'lucide-react';
 
 const Location: React.FC = () => {
   return (
-    <section id="location" className="py-32 px-8 bg-black relative border-t border-stone-900 scroll-mt-32">
+    <section id="location" className="py-32 px-8 bg-black relative border-t border-stone-900 scroll-mt-40">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
           <span className="text-xs tracking-[0.4em] text-orange-500 uppercase mb-4 block">Location</span>

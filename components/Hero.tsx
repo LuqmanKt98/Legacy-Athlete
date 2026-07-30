@@ -152,7 +152,7 @@ const Hero: React.FC = () => {
 
       {/* Content Overlay — offset below the fixed header (utility bar + nav)
           rather than inset-0, so the eyebrow never sits underneath it. */}
-      <div className="absolute inset-x-0 top-[6.5rem] bottom-0 z-20 flex flex-col items-center justify-center px-6 text-center">
+      <div className="absolute inset-x-0 top-[9.5rem] bottom-0 z-20 flex flex-col items-center justify-center px-6 text-center">
         <div className="mb-10 overflow-hidden">
           <span className="block text-[10px] md:text-xs tracking-[1em] text-orange-600 uppercase font-bold drop-shadow-[0_0_15px_rgba(255,69,0,0.5)]">
             TRUE ATHLETIC DEVELOPMENT

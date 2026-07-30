@@ -21,7 +21,10 @@ import AdminPanel from './components/AdminPanel';
 import Philosophy from './components/Philosophy';
 import TrackableProgress from './components/TrackableProgress';
 import TheGap from './components/TheGap';
-import SummerCamp from './components/SummerCamp';
+import HolidayCamps from './components/HolidayCamps';
+import FallLeague from './components/FallLeague';
+import Gallery from './components/Gallery';
+import MeasurableIncreases from './components/MeasurableIncreases';
 import FAQ from './components/FAQ';
 import History from './components/History';
 import Location from './components/Location';
@@ -55,6 +58,9 @@ function App() {
   // onLoginSuccess still sets this true so a fresh login goes straight into the console.
   const [showDashboard, setShowDashboard] = useState(false);
   const [selectedPlanId, setSelectedPlanId] = useState<string | undefined>(undefined);
+  // Several distinct products (every Holiday Camp date, Fall 3v3) can share one flat-rate
+  // plan id — this carries the human-readable specific one through to Payment's display/email.
+  const [selectedEventLabel, setSelectedEventLabel] = useState<string | undefined>(undefined);
   const [pendingScrollTarget, setPendingScrollTarget] = useState<string | null>(null);
 
   // Admin claim resolves asynchronously after auth loads. When it comes back true,
@@ -167,6 +173,11 @@ function App() {
 
       <Connector />
 
+      {/* Cohort-level performance data — proof of concept */}
+      <MeasurableIncreases />
+
+      <Connector />
+
       {/* The Problem / Why Athletes Plateau */}
       <TheGap />
 
@@ -225,7 +236,20 @@ function App() {
 
       <Connector />
 
-      <SummerCamp onSelectPlan={setSelectedPlanId} />
+      <HolidayCamps
+        onSelectCamp={(planId, label) => { setSelectedPlanId(planId); setSelectedEventLabel(label); }}
+      />
+
+      <Connector />
+
+      <FallLeague
+        onSelectPlan={(planId) => { setSelectedPlanId(planId); setSelectedEventLabel(undefined); }}
+      />
+
+      <Connector />
+
+      {/* Inside Legacy — facility & culture gallery */}
+      <Gallery />
 
       <Connector />
 
@@ -242,12 +266,12 @@ function App() {
       {/* What Happens After */}
       <Roadmap />
 
-      <Payment initialPlanId={selectedPlanId} onLoginRequired={handleLoginRequired} />
+      <Payment initialPlanId={selectedPlanId} initialEventLabel={selectedEventLabel} onLoginRequired={handleLoginRequired} />
 
       <Connector />
 
       {/* Assessment (new families) — primary conversion point of the funnel */}
-      <section id="assessment" className="py-32 px-8 bg-black relative scroll-mt-32">
+      <section id="assessment" className="py-32 px-8 bg-black relative scroll-mt-40">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div>
             <span className="text-xs tracking-[0.4em] text-orange-500 uppercase mb-4 block">New Here?</span>
@@ -280,7 +304,7 @@ function App() {
       <Connector />
 
       {/* Member session booking — for athletes already in the program */}
-      <section id="apply" className="py-32 px-8 bg-black relative scroll-mt-32 border-t border-stone-900">
+      <section id="apply" className="py-32 px-8 bg-black relative scroll-mt-40 border-t border-stone-900">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div>
             <span className="text-xs tracking-[0.4em] text-orange-500 uppercase mb-4 block">Members: Book Now</span>

@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { Menu, X, MessageCircle, MapPin, Clock, Smartphone, ArrowUpRight } from 'lucide-react';
+import { Menu, X, MessageCircle, MapPin, Clock, Smartphone, ArrowUpRight, Flame } from 'lucide-react';
 import { ATHLETE_APP_URL } from '../constants';
 
 interface NavbarProps {
@@ -33,7 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({ onPortalClick, onLoginClick, isLoggedIn
     );
   }, []);
 
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, id: string) => {
     e.preventDefault();
     setIsOpen(false);
     const element = document.getElementById(id);
@@ -45,6 +45,18 @@ const Navbar: React.FC<NavbarProps> = ({ onPortalClick, onLoginClick, isLoggedIn
   return (
     <>
       <div ref={wrapRef} className="fixed top-0 left-0 w-full z-50 backdrop-blur-sm bg-black/10">
+        {/* Fall 3v3 League banner — "highlighted at the top header" per client brief.
+            Kept as its own slim strip rather than crammed into the utility bar below,
+            which is already at capacity on mobile. */}
+        <button
+          onClick={(e) => handleScroll(e, 'fall-3v3')}
+          className="w-full flex items-center justify-center gap-2 py-1.5 px-4 bg-gradient-to-r from-orange-600 to-blue-600 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.25em] hover:brightness-110 transition-all"
+        >
+          <Flame className="w-3 h-3 flex-shrink-0 animate-pulse" />
+          <span>Fall 3v3 League — Season Prep Active</span>
+          <span className="hidden sm:inline">— Register Now</span>
+        </button>
+
         {/* Utility Bar — visible at every breakpoint, mobile included.
             Labels shorten below sm so all four links fit one row on a phone. */}
         <div className="flex items-center justify-between gap-2 px-4 sm:px-8 md:px-16 py-2.5 border-b border-stone-900/60 bg-black/60 text-[9px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-stone-500">
