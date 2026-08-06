@@ -100,9 +100,10 @@ const COACH_EMAIL = "m.waite11@gmail.com";
 // Training schedule (default fallback — used only when Firestore schedule_templates collection is empty)
 // Mon/Tue/Thu evenings + Saturday morning. Keep in sync with components/admin/seed.ts.
 const DEFAULT_SCHEDULE = [
-    { day: 1, times: [{ h: 17, m: 30, focus: "Skills + Performance", duration: 90 }, { h: 18, m: 30, focus: "Skills + Performance", duration: 90 }] },
-    { day: 2, times: [{ h: 17, m: 30, focus: "Skills + Performance", duration: 90 }, { h: 18, m: 30, focus: "Skills + Performance", duration: 90 }] },
-    { day: 4, times: [{ h: 17, m: 30, focus: "Skills + Performance", duration: 90 }, { h: 18, m: 30, focus: "Skills + Performance", duration: 90 }] },
+    { day: 1, times: [{ h: 6, m: 0, focus: "Elite Session", duration: 90 }, { h: 16, m: 30, focus: "Beginner Skills", duration: 90 }, { h: 17, m: 30, focus: "Skills + Performance", duration: 90 }, { h: 18, m: 30, focus: "Skills + Performance", duration: 90 }] },
+    { day: 2, times: [{ h: 16, m: 30, focus: "Beginner Skills", duration: 90 }, { h: 17, m: 30, focus: "Skills + Performance", duration: 90 }, { h: 18, m: 30, focus: "Skills + Performance", duration: 90 }] },
+    { day: 3, times: [{ h: 6, m: 0, focus: "Elite Session", duration: 90 }] },
+    { day: 4, times: [{ h: 16, m: 30, focus: "Beginner Skills", duration: 90 }, { h: 17, m: 30, focus: "Skills + Performance", duration: 90 }, { h: 18, m: 30, focus: "Skills + Performance", duration: 90 }] },
     { day: 6, times: [{ h: 9, m: 0, focus: "Skills + Performance", duration: 90 }] },
 ];
 async function loadScheduleFromFirestore() {

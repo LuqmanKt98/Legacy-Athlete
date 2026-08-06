@@ -2,7 +2,10 @@ import { collection, getDocs, writeBatch, doc, serverTimestamp, setDoc, getDoc, 
 import { db } from '../../lib/firebase';
 import { PRICING_TIERS, ROADMAP_STEPS } from '../../constants';
 
-// Mon/Tue/Thu evenings + Saturday morning. Keep in sync with functions/src/index.ts DEFAULT_SCHEDULE.
+// Keep in sync with functions/src/index.ts DEFAULT_SCHEDULE and the display grid in
+// components/Programs.tsx.
+const BEGINNER_SKILLS = { h: 16, m: 30, focus: 'Beginner Skills', duration: 90 };
+const ELITE_MORNING = { h: 6, m: 0, focus: 'Elite Session', duration: 90 };
 const SKILLS_PERF_EVENING = [
   { h: 17, m: 30, focus: 'Skills + Performance', duration: 90 },
   { h: 18, m: 30, focus: 'Skills + Performance', duration: 90 },
@@ -10,10 +13,10 @@ const SKILLS_PERF_EVENING = [
 
 const DEFAULT_SCHEDULE = [
   { day: 0, times: [] },
-  { day: 1, times: SKILLS_PERF_EVENING },
-  { day: 2, times: SKILLS_PERF_EVENING },
-  { day: 3, times: [] },
-  { day: 4, times: SKILLS_PERF_EVENING },
+  { day: 1, times: [ELITE_MORNING, BEGINNER_SKILLS, ...SKILLS_PERF_EVENING] },
+  { day: 2, times: [BEGINNER_SKILLS, ...SKILLS_PERF_EVENING] },
+  { day: 3, times: [ELITE_MORNING] },
+  { day: 4, times: [BEGINNER_SKILLS, ...SKILLS_PERF_EVENING] },
   { day: 5, times: [] },
   { day: 6, times: [{ h: 9, m: 0, focus: 'Skills + Performance', duration: 90 }] },
 ];

@@ -7,12 +7,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Placeholder set built from existing site photography — swap for the client's own
 // facility/culture photos once provided (per brief: "I will provide images to add").
+// The historic Naismith portrait was removed at the client's request (2026-08-04 brief).
 const images = [
   { src: '/images/013A6138-9.jpg', alt: 'Legacy Athlete training session', colSpan: 'md:col-span-2 md:row-span-2' },
   { src: '/images/013A5807-45.jpg', alt: 'Coached small-group session', colSpan: 'md:col-span-1 md:row-span-1' },
   { src: '/images/013A5892-56.jpg', alt: 'Skill and movement training', colSpan: 'md:col-span-1 md:row-span-1' },
-  { src: '/images/013A5924-58.jpg', alt: 'Legacy Athlete facility', colSpan: 'md:col-span-1 md:row-span-1' },
-  { src: '/images/nai-e1703254164537.jpeg', alt: 'Athlete development at Legacy', colSpan: 'md:col-span-1 md:row-span-1' },
+  // Spans 2 columns so the 4-image set fills the 4x2 grid exactly with no empty cell.
+  { src: '/images/013A5924-58.jpg', alt: 'Legacy Athlete facility', colSpan: 'md:col-span-2 md:row-span-1' },
 ];
 
 const Gallery: React.FC = () => {

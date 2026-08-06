@@ -9,8 +9,8 @@ export const PROGRAMS: Program[] = [
   {
     id: '01',
     title: 'THE SESSION',
-    category: '60 Minutes',
-    description: 'Athletes join a small group training session led by our coaching staff. 60-minutes of focused work designed to introduce our standards.',
+    category: '90 Minutes',
+    description: 'Athletes join a small group training session led by our coaching staff. 90 minutes of focused work — 30 minutes of athletic performance training, then 60 minutes of basketball skills and games.',
     benefits: ['Small Group Setting', 'Expert Coaching', 'Structured Plan'],
     image: '/images/013A5807-45.jpg'
   },
@@ -36,7 +36,7 @@ export const ROADMAP_STEPS = [
   {
     phase: "01",
     title: "THE SESSION",
-    description: "Complete your first 60-minute coached session. Experience the environment and the work firsthand.",
+    description: "Complete your first 90-minute coached session. Experience the environment and the work firsthand.",
     tag: "Day 1"
   },
   {
@@ -101,12 +101,10 @@ export const TESTIMONIALS: Testimonial[] = [
     content: "The Legacy program not only focuses on building skills, but sharpening mental fortitude and problem solving. The practice translates to the game seamlessly.",
   },
   {
-    // Pending client copy (per 2026-07 brief: "waiting on response from client, will update").
-    // Left as prior placeholder content until real copy arrives — do not fabricate a replacement.
     id: 3,
-    name: "Coach David Rossi",
-    role: "Player Development",
-    content: "Finally, a system that values the details. They cut through the social media noise and focus on what actually wins games.",
+    name: "Gaynor P.",
+    role: "Parent",
+    content: "Coach Mark and his program has been a gamechanger for our son. He has helped Avery develop better ball handling skills and build his confidence on the court. Most importantly — Avery is working hard and having fun every step of the way. We can't thank Mark enough for the time and positive energy he has poured into our son.",
   }
 ];
 
@@ -118,7 +116,7 @@ export const PRICING_TIERS: PricingTier[] = [
     originalPrice: '45',
     description: 'Limited Time: 50% Off First Session',
     features: [
-      '60-Minute Coached Session',
+      '90-Minute Coached Session',
       'Pay Per Visit',
       'No Commitment Required'
     ],

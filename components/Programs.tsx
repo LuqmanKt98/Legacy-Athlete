@@ -136,17 +136,27 @@ const Programs: React.FC = () => {
                </p>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-stone-900 border border-stone-900 max-w-5xl mx-auto">
+            {/* Keep in sync with the bookable schedule in Firestore `schedule_templates`
+                (and the DEFAULT_SCHEDULE fallbacks in functions/src/index.ts + admin/seed.ts).
+                This grid is display-only — it does not create bookable slots by itself. */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-stone-900 border border-stone-900 max-w-6xl mx-auto">
                {[
                  { day: 'MONDAY', sessions: [
+                   { time: '6:00 - 7:30 AM', focus: 'Elite Session', color: 'text-violet-400', dot: 'bg-violet-400' },
+                   { time: '4:30 - 6:00 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
                    { time: '5:30 - 7:00 PM', focus: 'Skills + Performance', color: 'text-amber-500', dot: 'bg-amber-500' },
                    { time: '6:30 - 8:00 PM', focus: 'Skills + Performance', color: 'text-emerald-500', dot: 'bg-emerald-500' }
                  ]},
                  { day: 'TUESDAY', sessions: [
+                   { time: '4:30 - 6:00 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
                    { time: '5:30 - 7:00 PM', focus: 'Skills + Performance', color: 'text-amber-500', dot: 'bg-amber-500' },
                    { time: '6:30 - 8:00 PM', focus: 'Skills + Performance', color: 'text-emerald-500', dot: 'bg-emerald-500' }
                  ]},
+                 { day: 'WEDNESDAY', sessions: [
+                   { time: '6:00 - 7:30 AM', focus: 'Elite Session', color: 'text-violet-400', dot: 'bg-violet-400' }
+                 ]},
                  { day: 'THURSDAY', sessions: [
+                   { time: '4:30 - 6:00 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
                    { time: '5:30 - 7:00 PM', focus: 'Skills + Performance', color: 'text-amber-500', dot: 'bg-amber-500' },
                    { time: '6:30 - 8:00 PM', focus: 'Skills + Performance', color: 'text-emerald-500', dot: 'bg-emerald-500' }
                  ]},

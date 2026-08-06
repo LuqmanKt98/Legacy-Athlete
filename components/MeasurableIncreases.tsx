@@ -18,7 +18,7 @@ const cohortMetrics = [
     end: 6.04,
     unit: "s",
     improvement: "-15.5% speed friction",
-    desc: "Measured with physical timing gates to track explosive acceleration.",
+    desc: "Timed at regular checkpoints to track explosive acceleration.",
     icon: <Zap className="w-5 h-5 text-orange-500" />
   },
   {
@@ -28,7 +28,7 @@ const cohortMetrics = [
     end: 28.5,
     unit: " in",
     improvement: "+35.7% vertical jump",
-    desc: "Captured via dual-axis force plates to calculate peak relative power.",
+    desc: "Measured at regular checkpoints to track lower-body power.",
     icon: <Trophy className="w-5 h-5 text-orange-500" />
   },
   {
@@ -166,7 +166,7 @@ const MeasurableIncreases: React.FC = () => {
           <div className="mb-6 md:mb-0 max-w-xl">
             <h4 className="font-athletic text-2xl text-white mb-2 uppercase font-bold">How We Record Athlete Performance</h4>
             <p className="text-stone-400 text-xs uppercase tracking-widest leading-relaxed">
-              Every vertical test, speed sprint, and lane agility layout is measured with physical timing gates and laser pressure plates. The metrics are pushed directly to our member portal. No manual timing, no bias.
+              We measure and time our athletes at regular checkpoints — vertical, sprint, and lane agility — so progress is tracked against their own baseline, not a guess. Results are recorded and shared through the member portal.
             </p>
           </div>
           <button

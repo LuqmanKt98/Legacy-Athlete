@@ -1,4 +1,8 @@
 export const focusColor = (focus: string): string => {
+  // Check the more specific labels first — "Beginner Skills" would otherwise fall
+  // through to the generic default.
+  if (focus.includes("Beginner Skills")) return "text-sky-400";
+  if (focus.includes("Elite Session")) return "text-violet-400";
   if (focus.includes("Skills + Performance")) return "text-orange-500";
   if (focus.includes("Speed & Agility")) return "text-amber-500";
   if (focus.includes("Total Skills")) return "text-emerald-500";
@@ -12,6 +16,8 @@ export const focusColor = (focus: string): string => {
 };
 
 export const focusDotColor = (focus: string): string => {
+  if (focus.includes("Beginner Skills")) return "bg-sky-400";
+  if (focus.includes("Elite Session")) return "bg-violet-400";
   if (focus.includes("Skills + Performance")) return "bg-orange-500";
   if (focus.includes("Speed & Agility")) return "bg-amber-500";
   if (focus.includes("Total Skills")) return "bg-emerald-500";
