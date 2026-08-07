@@ -4,7 +4,9 @@ import { PRICING_TIERS, ROADMAP_STEPS } from '../../constants';
 
 // Keep in sync with functions/src/index.ts DEFAULT_SCHEDULE and the display grid in
 // components/Programs.tsx.
-const BEGINNER_SKILLS = { h: 16, m: 30, focus: 'Beginner Skills', duration: 90 };
+// 60 min (4:30–5:30pm), confirmed by client 2026-08-07 — deliberately shorter than
+// the 90-min standard so it ends as the 5:30 session begins.
+const BEGINNER_SKILLS = { h: 16, m: 30, focus: 'Beginner Skills', duration: 60 };
 const ELITE_MORNING = { h: 6, m: 0, focus: 'Elite Session', duration: 90 };
 const SKILLS_PERF_EVENING = [
   { h: 17, m: 30, focus: 'Skills + Performance', duration: 90 },

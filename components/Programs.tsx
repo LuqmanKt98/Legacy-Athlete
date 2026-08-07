@@ -132,7 +132,7 @@ const Programs: React.FC = () => {
                   <h3 className="font-athletic text-4xl md:text-5xl text-white">WEEKLY <span className="text-stone-500">SCHEDULE</span></h3>
                </div>
                <p className="text-stone-500 text-xs uppercase tracking-widest mt-6 md:mt-0">
-                 Sessions run 90 minutes. Arrive 10 min early.
+                 Most sessions run 90 minutes. Arrive 10 min early.
                </p>
             </div>
             
@@ -143,12 +143,12 @@ const Programs: React.FC = () => {
                {[
                  { day: 'MONDAY', sessions: [
                    { time: '6:00 - 7:30 AM', focus: 'Elite Session', color: 'text-violet-400', dot: 'bg-violet-400' },
-                   { time: '4:30 - 6:00 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
+                   { time: '4:30 - 5:30 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
                    { time: '5:30 - 7:00 PM', focus: 'Skills + Performance', color: 'text-amber-500', dot: 'bg-amber-500' },
                    { time: '6:30 - 8:00 PM', focus: 'Skills + Performance', color: 'text-emerald-500', dot: 'bg-emerald-500' }
                  ]},
                  { day: 'TUESDAY', sessions: [
-                   { time: '4:30 - 6:00 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
+                   { time: '4:30 - 5:30 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
                    { time: '5:30 - 7:00 PM', focus: 'Skills + Performance', color: 'text-amber-500', dot: 'bg-amber-500' },
                    { time: '6:30 - 8:00 PM', focus: 'Skills + Performance', color: 'text-emerald-500', dot: 'bg-emerald-500' }
                  ]},
@@ -156,7 +156,7 @@ const Programs: React.FC = () => {
                    { time: '6:00 - 7:30 AM', focus: 'Elite Session', color: 'text-violet-400', dot: 'bg-violet-400' }
                  ]},
                  { day: 'THURSDAY', sessions: [
-                   { time: '4:30 - 6:00 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
+                   { time: '4:30 - 5:30 PM', focus: 'Beginner Skills', color: 'text-sky-400', dot: 'bg-sky-400' },
                    { time: '5:30 - 7:00 PM', focus: 'Skills + Performance', color: 'text-amber-500', dot: 'bg-amber-500' },
                    { time: '6:30 - 8:00 PM', focus: 'Skills + Performance', color: 'text-emerald-500', dot: 'bg-emerald-500' }
                  ]},
