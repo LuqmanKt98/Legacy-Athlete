@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 
-// Temporary: mw@legacyathlete.com isn't set up yet, routing to his Gmail for now.
-const COACH_EMAIL = "m.waite11@gmail.com";
+// Branded Workspace mailbox, live since 2026-08-15.
+const COACH_EMAIL = "Mw@legacyathlete.fit";
 
 const API_BASE = import.meta.env.VITE_FUNCTIONS_URL || "";
 const getApiUrl = (endpoint: string) => API_BASE ? `${API_BASE}/${endpoint}` : `/api/${endpoint}`;

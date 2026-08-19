@@ -7,8 +7,8 @@ interface FooterProps {
   onPortalClick?: () => void;
 }
 
-// Temporary: mw@legacyathlete.com isn't set up yet, routing to his Gmail for now.
-const COACH_EMAIL = 'm.waite11@gmail.com';
+// Branded Workspace mailbox, live since 2026-08-15.
+const COACH_EMAIL = 'Mw@legacyathlete.fit';
 
 const scrollTo = (id: string) => (e: React.MouseEvent) => {
   e.preventDefault();

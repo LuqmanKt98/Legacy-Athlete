@@ -93,10 +93,14 @@ const db = admin.firestore();
 // ─── Constants ────────────────────────────────────────────────────────────────
 const CST_TIMEZONE = "America/Chicago";
 const MAX_ATTENDANCE = 12;
-// mw@legacyathlete.com is the intended long-term address but that mailbox
-// doesn't exist yet — client asked to route coach notifications to his
-// personal Gmail in the meantime (confirmed 2026-07-28).
-const COACH_EMAIL = "m.waite11@gmail.com";
+// Branded Google Workspace mailbox, live since 2026-08-15. Used as the public
+// "contact us" address in customer-facing emails.
+const COACH_CONTACT_EMAIL = "Mw@legacyathlete.fit";
+// Every inbound alert (bookings, assessments, signups, payment issues) goes to
+// BOTH the branded mailbox and the client's personal Gmail — he asked to keep
+// the Gmail as a safety net while the new mailbox beds in. Resend accepts an
+// array of recipients, so this is a single send, not two.
+const COACH_NOTIFICATION_EMAILS = [COACH_CONTACT_EMAIL, "m.waite11@gmail.com"];
 // Training schedule (default fallback — used only when Firestore schedule_templates collection is empty)
 // Mon/Tue/Thu evenings + Saturday morning. Keep in sync with components/admin/seed.ts.
 const DEFAULT_SCHEDULE = [
@@ -315,7 +319,7 @@ function buildAthleteEmail(athleteName, sessionDate, endDate, focus, bookingId, 
   </div>
   <div class="footer">
     <p class="footer-text">© Legacy Athlete. This email was sent because you booked a training session.<br>
-    If you did not make this booking, contact us at ${COACH_EMAIL}</p>
+    If you did not make this booking, contact us at ${COACH_CONTACT_EMAIL}</p>
   </div>
 </div>
 </body>
@@ -402,7 +406,7 @@ function buildWelcomeEmail(email, displayName) {
   </div>
   <div class="cta-section">
     <p style="color:#a8a29e;font-size:13px;margin:0 0 20px;">Your athlete dashboard gives you a full view of your upcoming sessions, booking history, and training schedule.</p>
-    <p style="color:#57534e;font-size:11px;margin:0;">Questions? Reach us at <a href="mailto:${COACH_EMAIL}" style="color:#ea580c;">${COACH_EMAIL}</a></p>
+    <p style="color:#57534e;font-size:11px;margin:0;">Questions? Reach us at <a href="mailto:${COACH_CONTACT_EMAIL}" style="color:#ea580c;">${COACH_CONTACT_EMAIL}</a></p>
   </div>
   <div class="footer">
     <p class="footer-text">© Legacy Athlete. You're receiving this because you just created an account.<br>Your login: ${email}</p>
@@ -458,7 +462,7 @@ function buildPlanPurchaseEmail(email, planName, amount, transactionId, addons, 
   </div>
   <div class="cta-section">
     <p style="color:#a8a29e;font-size:13px;margin:0 0 12px;">You now have full access to your athlete dashboard. Book your sessions and start your training protocol.</p>
-    <p style="color:#57534e;font-size:11px;margin:0;">Questions? Contact us at <a href="mailto:${COACH_EMAIL}" style="color:#ea580c;">${COACH_EMAIL}</a></p>
+    <p style="color:#57534e;font-size:11px;margin:0;">Questions? Contact us at <a href="mailto:${COACH_CONTACT_EMAIL}" style="color:#ea580c;">${COACH_CONTACT_EMAIL}</a></p>
   </div>
   <div class="footer">
     <p class="footer-text">© Legacy Athlete. This receipt was sent to ${email} upon successful plan enrollment.</p>
@@ -534,7 +538,7 @@ function buildCancellationEmail(athleteName, sessionDate, focus) {
     <div class="row" style="border-bottom:none;"><span class="lbl">Focus</span><span class="val" style="color:#ea580c;">${focus}</span></div>
     <p style="color:#a8a29e;font-size:13px;margin-top:16px;">The slot is now available. Rebook anytime at our website.</p>
   </div>
-  <div class="f"><p>© Legacy Athlete · Questions? ${COACH_EMAIL}</p></div>
+  <div class="f"><p>© Legacy Athlete · Questions? ${COACH_CONTACT_EMAIL}</p></div>
 </div>
 </body>
 </html>`;
@@ -578,7 +582,7 @@ function buildAssessmentConfirmationEmail(parentName, athleteName, level, commit
     <div class="detail-row" style="border-bottom: none;"><span class="detail-label">Preferred Date</span><span class="detail-value">${preferredDate}</span></div>
   </div>
   <div class="cta-section">
-    <p style="color: #57534e; font-size: 11px; margin: 0;">Questions in the meantime? Reach us at <a href="mailto:${COACH_EMAIL}" style="color:#ea580c;">${COACH_EMAIL}</a></p>
+    <p style="color: #57534e; font-size: 11px; margin: 0;">Questions in the meantime? Reach us at <a href="mailto:${COACH_CONTACT_EMAIL}" style="color:#ea580c;">${COACH_CONTACT_EMAIL}</a></p>
   </div>
   <div class="footer">
     <p class="footer-text">© Legacy Athlete. This email was sent because a free athlete assessment was requested on our website.</p>
@@ -1181,7 +1185,7 @@ exports.createBooking = functions.https.onRequest((req, res) => {
             });
             await resend.emails.send({
                 from: "Legacy Athlete Bookings <bookings@legacyathlete.fit>",
-                to: [COACH_EMAIL],
+                to: COACH_NOTIFICATION_EMAILS,
                 subject: `🔔 New Booking: ${safeAthleteName} – ${(0, date_fns_1.format)((0, date_fns_tz_1.toZonedTime)(sessionDate, CST_TIMEZONE), "MMM do h:mm a")} CST`,
                 html: buildCoachEmail(safeAthleteName, safeEmail, sessionDate, sessionFocus, sessionId, bookingId, "PAID", calendarEventId),
             });
@@ -1357,7 +1361,7 @@ exports.confirmPlanPurchase = functions.https.onRequest((req, res) => {
             // Coach notification
             await resend.emails.send({
                 from: "Legacy Athlete Plans <bookings@legacyathlete.fit>",
-                to: [COACH_EMAIL],
+                to: COACH_NOTIFICATION_EMAILS,
                 subject: `💳 New Plan Purchase: ${email} – ${planName}`,
                 html: buildCoachPlanEmail(String(email).toLowerCase().trim(), planName, authorativeAmount, transactionId, addons, Boolean(is8Week)),
             });
@@ -1489,7 +1493,7 @@ exports.submitAssessment = functions.https.onRequest((req, res) => {
                 });
                 await resend.emails.send({
                     from: "Legacy Athlete Leads <bookings@legacyathlete.fit>",
-                    to: [COACH_EMAIL],
+                    to: COACH_NOTIFICATION_EMAILS,
                     subject: `🏀 New Free Assessment: ${safeAthleteName} (${grade})`,
                     html: buildCoachAssessmentEmail(safeParentName, safeParentEmail, safeParentPhone, safeAthleteName, safeGrade, safeSchool, String(level), String(commitment), preferredDateLabel, safeNotes),
                 });
@@ -1703,7 +1707,7 @@ exports.stripeWebhook = functions.https.onRequest(async (req, res) => {
                             });
                             await resend.emails.send({
                                 from: "Legacy Athlete Bookings <bookings@legacyathlete.fit>",
-                                to: [COACH_EMAIL],
+                                to: COACH_NOTIFICATION_EMAILS,
                                 subject: `🔔 New Booking (webhook): ${athleteName} – ${(0, date_fns_1.format)((0, date_fns_tz_1.toZonedTime)(sessionDate, CST_TIMEZONE), "MMM do h:mm a")} CST`,
                                 html: buildCoachEmail(athleteName, email, sessionDate, sessionFocus, sessionId, bookingId, "PAID", calendarEventId),
                             });
@@ -1784,7 +1788,7 @@ exports.stripeWebhook = functions.https.onRequest(async (req, res) => {
                     const resend = initResend();
                     await resend.emails.send({
                         from: "Legacy Athlete Alerts <bookings@legacyathlete.fit>",
-                        to: [COACH_EMAIL],
+                        to: COACH_NOTIFICATION_EMAILS,
                         subject: `⚠️ Chargeback Filed – $${(dispute.amount / 100).toFixed(2)} – Action Required`,
                         html: `<p>A chargeback has been filed for Payment Intent <b>${piId}</b>.<br>
                    Amount: <b>$${(dispute.amount / 100).toFixed(2)}</b><br>
@@ -1969,7 +1973,7 @@ exports.adminGrantPackage = functions.https.onRequest({ invoker: "public" }, (re
                     });
                     await resend.emails.send({
                         from: "Legacy Athlete Plans <bookings@legacyathlete.fit>",
-                        to: [COACH_EMAIL],
+                        to: COACH_NOTIFICATION_EMAILS,
                         subject: `📒 Manual Grant: ${safeEmail} – ${planName}${discount ? ` (${discount}% off)` : ""}`,
                         html: buildCoachPlanEmail(safeEmail, `${planName}${discount ? ` (${discount}% off)` : ""}`, amountDollars, grantId, addons, Boolean(is8Week)),
                     });
@@ -2094,7 +2098,7 @@ exports.sendWelcomeEmail = functionsV1.auth.user().onCreate(async (user) => {
         const resend = initResend();
         await resend.emails.send({
             from: "Legacy Athlete Alerts <bookings@legacyathlete.fit>",
-            to: [COACH_EMAIL],
+            to: COACH_NOTIFICATION_EMAILS,
             subject: `🆕 New Signup: ${displayName || safeEmail}`,
             html: buildNewSignupEmail(safeEmail, displayName || "", user.uid, provider),
         });

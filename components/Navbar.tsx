@@ -11,8 +11,9 @@ interface NavbarProps {
   onConsoleClick?: () => void;
 }
 
-// Temporary: mw@legacyathlete.com isn't set up yet, routing to his Gmail for now.
-const COACH_EMAIL = 'm.waite11@gmail.com';
+// Branded Workspace mailbox, live since 2026-08-15. Coach alert emails still copy
+// his personal Gmail as well — see COACH_NOTIFICATION_EMAILS in functions/src/index.ts.
+const COACH_EMAIL = 'Mw@legacyathlete.fit';
 
 const NAV_ITEMS = [
   { label: 'About', id: 'mission' },
