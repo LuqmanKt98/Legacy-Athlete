@@ -38,16 +38,21 @@ const PreseasonBundle: React.FC<PreseasonBundleProps> = ({ onSelectPlan }) => {
   const tax = subtotal * IL_TAX_RATE;
   const total = subtotal + tax;
 
+  // Slide only — never fade from opacity:0. This section is a jump target (the
+  // top banner and the Quick Access card both scrollIntoView straight to it),
+  // which can land past the ScrollTrigger point and leave a faded element stuck
+  // invisible. Animating position only means the worst case is "no animation",
+  // never "section disappears".
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(sectionRef.current,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
+        { y: 40 },
+        { y: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 85%' } }
       );
       if (tiersRef.current) {
         gsap.fromTo(tiersRef.current.querySelectorAll('.tier-card'),
-          { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: tiersRef.current, start: 'top 85%' } }
+          { y: 24 },
+          { y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: tiersRef.current, start: 'top 85%' } }
         );
       }
     }, sectionRef);

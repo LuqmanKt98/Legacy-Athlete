@@ -167,19 +167,14 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
   const tax = subtotalAfterDiscount * 0.1025; // 10.25% IL Sales Tax
   const total = subtotalAfterDiscount + tax;
 
-  useEffect(() => {
-    gsap.fromTo(sectionRef.current,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 1,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        }
-      }
-    );
-  }, []);
+  // NO entrance animation on the checkout section — deliberately.
+  //
+  // This previously faded in from opacity:0 on a ScrollTrigger. Every "Enroll"
+  // / "RSVP" button jumps straight here via scrollIntoView, which lands the
+  // section top at the very top of the viewport and skips the trigger point.
+  // The tween never ran, so the section stayed at opacity:0 — rendered,
+  // full-size, and completely invisible. Users saw a blank black screen and
+  // could not pay. Checkout must never depend on an animation to be visible.
 
   useEffect(() => {
     // Create a PaymentIntent whenever the plan config changes — only for logged-in users.

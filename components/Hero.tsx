@@ -3,6 +3,8 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MagneticButton from './MagneticButton';
+import PreseasonCountdown from './PreseasonCountdown';
+import { PRESEASON_DATES, PRESEASON_START } from '../constants';
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -153,48 +155,63 @@ const Hero: React.FC = () => {
       {/* Content Overlay — offset below the fixed header (utility bar + nav)
           rather than inset-0, so the eyebrow never sits underneath it. */}
       <div className="absolute inset-x-0 top-[9.5rem] bottom-0 z-20 flex flex-col items-center justify-center px-6 text-center">
-        <div className="mb-10 overflow-hidden">
-          <span className="block text-[10px] md:text-xs tracking-[1em] text-orange-600 uppercase font-bold drop-shadow-[0_0_15px_rgba(255,69,0,0.5)]">
-            TRUE ATHLETIC DEVELOPMENT
-          </span>
+        {/* Hero now promotes the 8-Week Preseason Challenge, per the client's
+            2026-08-25 brief ("basically need to change the hero section to promote
+            8 week challenge"). Copy matches the mockup he supplied.
+            NOTE: this is seasonal — after the Sept 14 cohort starts, the countdown
+            self-hides, but the headline itself should be revisited once the
+            campaign ends. */}
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-2">
+          {['Ages 11–18', 'Beginners Through Advanced', PRESEASON_DATES].map((badge) => (
+            <span
+              key={badge}
+              className="inline-flex items-center border border-orange-500/30 bg-orange-600/10 px-3.5 py-1.5 rounded-full text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-orange-400 font-bold"
+            >
+              {badge}
+            </span>
+          ))}
         </div>
-        
-        <h1 
+
+        <h1
           ref={headlineRef}
-          className="font-athletic text-5xl md:text-[8rem] leading-[0.9] text-white mb-12"
+          className="font-athletic text-5xl md:text-[7rem] leading-[0.9] text-white mb-6"
         >
-          TRUE PLAYER <br /> 
-          <span className="text-stone-500 italic opacity-80">DEVELOPMENT.</span>
+          8-WEEK PRESEASON <br />
+          <span className="bg-gradient-to-r from-orange-500 to-amber-400 text-transparent bg-clip-text">CHALLENGE</span>
         </h1>
 
         <div ref={ctaRef} className="flex flex-col items-center max-w-4xl">
-          <p className="text-stone-500 text-[10px] md:text-sm uppercase tracking-[0.2em] mb-12 leading-relaxed max-w-2xl">
-            We promote creativity, intrinsic motivation, and character development of young athletes—going far beyond wins and losses.
+          <p className="text-white text-base md:text-2xl font-athletic mb-5 uppercase">
+            Don't wait for tryouts to get ready.
           </p>
-          
-          <div className="mt-8 flex flex-col md:flex-row items-center justify-center space-y-6 md:space-y-0 md:space-x-8">
+
+          <p className="text-stone-400 text-xs md:text-base leading-relaxed mb-10 max-w-2xl">
+            Build the skills, athleticism, confidence and game-readiness your athlete needs before
+            the new season starts.
+          </p>
+
+          <PreseasonCountdown target={PRESEASON_START} className="mb-10" />
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto">
             <MagneticButton
-              className="w-full md:w-auto !px-16 !py-6 text-xl !bg-white !text-black hover:!bg-orange-600 hover:!text-white shadow-[0_0_80px_rgba(255,255,255,0.08)]"
-              onClick={() => document.getElementById('assessment')?.scrollIntoView({behavior: 'smooth'})}
+              className="w-full sm:w-auto !px-12 !py-5 text-lg !bg-orange-600 !text-white hover:!bg-orange-500 shadow-[0_0_60px_rgba(234,88,12,0.25)]"
+              onClick={() => document.getElementById('preseason')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              BOOK YOUR FREE ASSESSMENT
+              JOIN THE CHALLENGE
             </MagneticButton>
 
             <MagneticButton
               type="secondary"
-              className="w-full md:w-auto !px-16 !py-6 text-xl"
-              onClick={() => document.getElementById('apply')?.scrollIntoView({behavior: 'smooth'})}
+              className="w-full sm:w-auto !px-12 !py-5 text-lg"
+              onClick={() => document.getElementById('assessment')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              BOOK MEMBER SESSION
+              BOOK FREE ASSESSMENT
             </MagneticButton>
           </div>
 
-          <button
-            onClick={() => document.getElementById('weekly-schedule')?.scrollIntoView({behavior: 'smooth'})}
-            className="group mt-10 flex items-center space-x-4 text-[10px] uppercase tracking-[0.3em] text-stone-600 hover:text-white transition-all duration-700 mx-auto"
-          >
-            <span className="border-b border-transparent group-hover:border-orange-600 pb-1">View Weekly Schedule</span>
-          </button>
+          <p className="text-stone-600 text-[9px] md:text-[10px] uppercase tracking-[0.25em] mt-8">
+            Cohort begins Sept 14 · 8-Week Preseason Bundle
+          </p>
         </div>
       </div>
 

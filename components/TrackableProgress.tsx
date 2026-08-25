@@ -19,8 +19,8 @@ const TrackableProgress: React.FC = () => {
     });
 
     tl.fromTo(".trackable-item", 
-      { y: 30, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: "power3.out" }
+      { y: 30 },
+      { y: 0, stagger: 0.15, duration: 0.8, ease: "power3.out" }
     );
   }, []);
 

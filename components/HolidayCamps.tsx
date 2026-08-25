@@ -57,14 +57,16 @@ const HolidayCamps: React.FC<HolidayCampsProps> = ({ onSelectCamp }) => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Slide only, no opacity — this is a jump target (top banner + Quick
+      // Access), so a faded start state can stick at 0 and hide the section.
       gsap.fromTo(sectionRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' } }
+        { y: 50 },
+        { y: 0, duration: 1.0, ease: 'power3.out', scrollTrigger: { trigger: sectionRef.current, start: 'top 80%' } }
       );
       if (listRef.current) {
         gsap.fromTo(listRef.current.querySelectorAll('.camp-card'),
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out', scrollTrigger: { trigger: listRef.current, start: 'top 85%' } }
+          { y: 20 },
+          { y: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out', scrollTrigger: { trigger: listRef.current, start: 'top 85%' } }
         );
       }
     }, sectionRef);

@@ -123,6 +123,8 @@ export const TESTIMONIALS: Testimonial[] = [
 // Prices MUST stay in sync with PLAN_PRICES_CENTS in functions/src/index.ts —
 // the server recalculates the charge and rejects unknown plan ids.
 export const PRESEASON_DATES = 'Sept 14 – Nov 8, 2026';
+/** Cohort start — drives the hero countdown. */
+export const PRESEASON_START = new Date('2026-09-14T09:00:00');
 export const PRESEASON_LEAGUE_PRICE = 135;
 export const PRESEASON_LEAGUE_REGULAR = 195;
 
