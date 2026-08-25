@@ -22,6 +22,7 @@ import Philosophy from './components/Philosophy';
 import TrackableProgress from './components/TrackableProgress';
 import TheGap from './components/TheGap';
 import HolidayCamps from './components/HolidayCamps';
+import PreseasonBundle from './components/PreseasonBundle';
 import FallLeague from './components/FallLeague';
 import Gallery from './components/Gallery';
 import MeasurableIncreases from './components/MeasurableIncreases';
@@ -233,6 +234,13 @@ function App() {
 
       {/* Legacy Athlete App / Trackable Progress */}
       <TrackableProgress />
+
+      <Connector />
+
+      {/* 8-Week Preseason Bundle — headline seasonal product (Sept 14 – Nov 8) */}
+      <PreseasonBundle
+        onSelectPlan={(planId, label) => { setSelectedPlanId(planId); setSelectedEventLabel(label); }}
+      />
 
       <Connector />
 

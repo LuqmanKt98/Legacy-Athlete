@@ -34,7 +34,9 @@ const SocialProof: React.FC = () => {
           <h2 className="font-athletic text-4xl md:text-6xl text-white">WHAT ATHLETES <span className="text-stone-500">ARE SAYING.</span></h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        {/* Two columns rather than three — four testimonials tile evenly, and the
+            longer quotes stay readable instead of squeezing into narrow columns. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           {TESTIMONIALS.map((t) => (
             <div key={t.id} className="proof-card bg-stone-900/30 border border-stone-800 p-8 rounded-lg flex flex-col justify-between hover:bg-stone-900/50 transition-colors">
               <div>

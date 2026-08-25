@@ -815,11 +815,23 @@ const PLAN_PRICES_CENTS: Record<string, number> = {
   "3x-week":         30900,   // $309
   "4x-week":         35900,   // $359
   "performance-solo":  9900,  // $99
+  // Retired 2026-08-25 ("make only one camp option for $65") — kept so historical
+  // purchases still resolve, but hidden in Firestore so they can't be bought.
   "camp-weekly":     24900,   // $249
   "camp-early-bird": 22900,   // $229
   "camp-day-pass":    6500,   // $65
-  "end-summer-camp":  7500,   // $75 — flat rate shared by every Holiday Camp date
-  "fall-3v3":        19500,   // $195 — Fall 3v3 League, 6-week flat enrollment
+  "end-summer-camp":  6500,   // $65 — the single camp product, shared by all Holiday Camp dates
+  "fall-3v3":        19500,   // $195 — Fall 3v3 League standalone, 6-week flat enrollment
+
+  // ── 8-Week Preseason Bundle (Sept 14 – Nov 8) ────────────────────────────────
+  // Three training frequencies. The "-league" variants bundle the Fall 3v3 Prep
+  // League at $135 instead of its $195 standalone price.
+  "preseason-1x":        31900,  // $319
+  "preseason-1x-league": 45400,  // $319 + $135
+  "preseason-2x":        46900,  // $469
+  "preseason-2x-league": 60400,  // $469 + $135
+  "preseason-3x":        54900,  // $549
+  "preseason-3x-league": 68400,  // $549 + $135
 };
 
 const PERFORMANCE_ADDON_CENTS: Record<string, number> = {

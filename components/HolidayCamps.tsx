@@ -16,7 +16,9 @@ interface HolidayCampsProps {
 // functions/src/index.ts. Add a new date here only; no backend change needed unless
 // the price itself changes.
 const EVENT_PLAN_ID = 'end-summer-camp';
-const PRICE = 75;
+// $65 since 2026-08-25 ("make only one camp option for $65"). Must match
+// PLAN_PRICES_CENTS["end-summer-camp"] and the Firestore `packages` doc.
+const PRICE = 65;
 
 interface Camp {
   id: string;

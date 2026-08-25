@@ -16,7 +16,10 @@ const API_BASE = import.meta.env.VITE_FUNCTIONS_URL || "";
 const getApiUrl = (endpoint: string) => API_BASE ? `${API_BASE}/${endpoint}` : `/api/${endpoint}`;
 
 // One-time flat-rate products — no monthly billing, add-ons, or 8-week bundling apply.
+// Preseason plans are matched by prefix: they are ALREADY an 8-week product, so
+// offering the "8-Week Bundle (2 months)" multiplier on top would double the charge.
 const FLAT_RATE_PLAN_IDS = new Set(['end-summer-camp', 'fall-3v3']);
+const isFlatRatePlan = (id: string) => FLAT_RATE_PLAN_IDS.has(id) || id.startsWith('preseason-');
 
 const CheckoutForm = ({ amount, onSuccess }: { amount: number, onSuccess: (id: string) => void }) => {
   const stripe = useStripe();
@@ -115,7 +118,6 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
   const recommendedPlan = PRICING_TIERS.find(t => t.recommended) || PRICING_TIERS[0];
   const [selectedPlanId, setSelectedPlanId] = useState(initialPlanId || recommendedPlan.id);
   const [eventLabel, setEventLabel] = useState(initialEventLabel);
-  const [addPerformance, setAddPerformance] = useState(false);
   const [is8WeekBundle, setIs8WeekBundle] = useState(false);
 
   const [clientSecret, setClientSecret] = useState('');
@@ -144,24 +146,22 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
 
   // Event RSVP is a flat one-time charge — clear any add-on/bundle selections.
   useEffect(() => {
-    if (FLAT_RATE_PLAN_IDS.has(selectedPlanId)) {
-      setAddPerformance(false);
+    if (isFlatRatePlan(selectedPlanId)) {
       setIs8WeekBundle(false);
     }
   }, [selectedPlanId]);
 
   const selectedPlan = PRICING_TIERS.find(t => t.id === selectedPlanId) || recommendedPlan;
   // One-time event RSVP — no monthly billing, add-ons, or bundles apply.
-  const isEvent = FLAT_RATE_PLAN_IDS.has(selectedPlan.id);
+  const isEvent = isFlatRatePlan(selectedPlan.id);
   // Several distinct camp dates share the 'end-summer-camp' plan id — eventLabel
   // carries the specific one chosen so the UI and confirmation email are accurate.
   const displayName = eventLabel || selectedPlan.name;
 
   // Calculate totals
   const basePrice = parseFloat(selectedPlan.price);
-  const performancePrice = (addPerformance && selectedPlan.id !== 'performance-solo') ? (selectedPlan.id === 'drop-in' ? 35 : 79) : 0;
   const months = is8WeekBundle && selectedPlan.id !== 'drop-in' ? 2 : 1;
-  const subtotal = (basePrice + performancePrice) * months;
+  const subtotal = basePrice * months;
   const discount = is8WeekBundle && selectedPlan.id !== 'drop-in' ? subtotal * 0.10 : 0;
   const subtotalAfterDiscount = subtotal - discount;
   const tax = subtotalAfterDiscount * 0.1025; // 10.25% IL Sales Tax
@@ -205,7 +205,6 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
           body: JSON.stringify({
             type: 'plan',
             planId: selectedPlanId,
-            addPerformance,
             is8Week: is8WeekBundle,
           }),
           signal: controller.signal,
@@ -225,7 +224,7 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
     })();
 
     return () => controller.abort();
-  }, [selectedPlanId, addPerformance, is8WeekBundle, user]);
+  }, [selectedPlanId, is8WeekBundle, user]);
 
   const handleSuccess = async (id: string) => {
     // Idempotency guard — stripe.confirmPayment can occasionally fire onSuccess twice
@@ -240,9 +239,6 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
     const email = user?.email;
     if (email) {
       const addons: string[] = [];
-      if (addPerformance && selectedPlan.id !== 'performance-solo') {
-        addons.push(`Performance Add-on (+$${selectedPlan.id === 'drop-in' ? '35' : '79'})`);
-      }
       if (is8WeekBundle && selectedPlan.id !== 'drop-in') {
         addons.push('8-Week Bundle (10% off)');
       }
@@ -292,12 +288,6 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
               <span className="text-[10px] text-stone-500 uppercase tracking-widest">Selected Plan</span>
               <span className="font-athletic text-white text-lg">{displayName}</span>
             </div>
-            {addPerformance && (
-              <div className="flex justify-between items-center">
-                <span className="text-[10px] text-stone-500 uppercase tracking-widest">Add-on</span>
-                <span className="font-athletic text-white text-lg">Performance</span>
-              </div>
-            )}
             {is8WeekBundle && (
               <div className="flex justify-between items-center">
                 <span className="text-[10px] text-stone-500 uppercase tracking-widest">Duration</span>
@@ -365,24 +355,15 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
                 >
                   {PRICING_TIERS.map(tier => (
                     <option key={tier.id} value={tier.id}>
-                      {tier.name} - ${tier.price}{tier.id !== 'drop-in' && !FLAT_RATE_PLAN_IDS.has(tier.id) ? '/mo' : ''}
+                      {tier.name} - ${tier.price}{tier.id !== 'drop-in' && !isFlatRatePlan(tier.id) ? '/mo' : ''}
                     </option>
                   ))}
                 </select>
 
+                {/* Performance Add-on removed at the client's request (brief 2026-08-25).
+                    The add-on for preseason enrolments is now the Fall 3v3 Prep League,
+                    selected in the Preseason Bundle section rather than here. */}
                 <div className="space-y-3 pt-4 border-t border-stone-800/50">
-                  {selectedPlan.id !== 'performance-solo' && !isEvent && (
-                    <label className="flex items-center space-x-3 cursor-pointer group">
-                      <div className={`w-5 h-5 border flex items-center justify-center transition-colors ${addPerformance ? 'bg-orange-500 border-orange-500' : 'border-stone-600 group-hover:border-orange-500'}`}>
-                        {addPerformance && <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
-                      </div>
-                      <input type="checkbox" className="hidden" checked={addPerformance} onChange={(e) => setAddPerformance(e.target.checked)} />
-                      <span className="text-xs text-stone-300 uppercase tracking-widest">
-                        Performance Add-on (+${selectedPlan.id === 'drop-in' ? '35' : '79'}{selectedPlan.id !== 'drop-in' ? '/mo' : ''})
-                      </span>
-                    </label>
-                  )}
-
                   {selectedPlan.id !== 'drop-in' && !isEvent && (
                     <label className="flex items-center space-x-3 cursor-pointer group">
                       <div className={`w-5 h-5 border flex items-center justify-center transition-colors ${is8WeekBundle ? 'bg-orange-500 border-orange-500' : 'border-stone-600 group-hover:border-orange-500'}`}>
@@ -401,12 +382,6 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
                     <span className="text-[10px] text-stone-500 uppercase tracking-widest">Base Plan</span>
                     <span className="text-xs text-stone-300 font-mono">${basePrice.toFixed(2).replace(/\.00$/, '')}</span>
                   </div>
-                  {addPerformance && selectedPlan.id !== 'performance-solo' && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-[10px] text-stone-500 uppercase tracking-widest">Performance Add-on</span>
-                      <span className="text-xs text-stone-300 font-mono">${performancePrice.toFixed(2).replace(/\.00$/, '')}</span>
-                    </div>
-                  )}
                   {is8WeekBundle && (
                     <>
                       <div className="flex justify-between items-center">

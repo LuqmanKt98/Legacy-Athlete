@@ -1,8 +1,33 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { Menu, X, MessageCircle, MapPin, Clock, Smartphone, ArrowUpRight, Flame } from 'lucide-react';
+import { Menu, X, MessageCircle, MapPin, Clock, Smartphone, ArrowUpRight, Flame, CalendarDays, Sun } from 'lucide-react';
 import { ATHLETE_APP_URL } from '../constants';
+
+// Three announcements share one strip rather than stacking three bars — the fixed
+// header is already ~150px on mobile and a third bar would eat the hero.
+const ANNOUNCEMENTS = [
+  {
+    id: 'preseason',
+    icon: CalendarDays,
+    text: '8-Week Preseason Bundle — Sept 14 to Nov 8',
+    cta: 'Enrol Now',
+  },
+  {
+    id: 'fall-3v3',
+    icon: Flame,
+    text: 'Fall 3v3 League — Season Prep Active',
+    cta: 'Register Now',
+  },
+  {
+    id: 'holiday-camps',
+    icon: Sun,
+    text: 'Labor Day Camp — Monday, September 7',
+    cta: 'Reserve a Spot',
+  },
+];
+
+const ROTATE_MS = 5000;
 
 interface NavbarProps {
   onPortalClick: () => void;
@@ -26,12 +51,24 @@ const NAV_ITEMS = [
 const Navbar: React.FC<NavbarProps> = ({ onPortalClick, onLoginClick, isLoggedIn, onConsoleClick }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
 
   useEffect(() => {
     gsap.fromTo(wrapRef.current,
       { y: -100, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", delay: 1 }
     );
+  }, []);
+
+  // Cycle the announcement strip. Held static for anyone who prefers reduced
+  // motion — a banner that swaps itself out is exactly what that setting is for.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = setInterval(
+      () => setAnnouncementIndex((i) => (i + 1) % ANNOUNCEMENTS.length),
+      ROTATE_MS
+    );
+    return () => clearInterval(timer);
   }, []);
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, id: string) => {
@@ -46,17 +83,30 @@ const Navbar: React.FC<NavbarProps> = ({ onPortalClick, onLoginClick, isLoggedIn
   return (
     <>
       <div ref={wrapRef} className="fixed top-0 left-0 w-full z-50 backdrop-blur-sm bg-black/10">
-        {/* Fall 3v3 League banner — "highlighted at the top header" per client brief.
-            Kept as its own slim strip rather than crammed into the utility bar below,
-            which is already at capacity on mobile. */}
-        <button
-          onClick={(e) => handleScroll(e, 'fall-3v3')}
-          className="w-full flex items-center justify-center gap-2 py-1.5 px-4 bg-gradient-to-r from-orange-600 to-blue-600 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.25em] hover:brightness-110 transition-all"
-        >
-          <Flame className="w-3 h-3 flex-shrink-0 animate-pulse" />
-          <span>Fall 3v3 League — Season Prep Active</span>
-          <span className="hidden sm:inline">— Register Now</span>
-        </button>
+        {/* Announcement strip — preseason bundle, 3v3 league and Labor Day camp,
+            each linking to its own section. Rotates so all three get the top slot
+            without tripling the header height. */}
+        <div className="relative w-full bg-gradient-to-r from-orange-600 to-blue-600">
+          {ANNOUNCEMENTS.map((a, i) => {
+            const Icon = a.icon;
+            const active = i === announcementIndex;
+            return (
+              <button
+                key={a.id}
+                onClick={(e) => handleScroll(e, a.id)}
+                aria-hidden={!active}
+                tabIndex={active ? 0 : -1}
+                className={`w-full flex items-center justify-center gap-2 py-1.5 px-4 text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.25em] hover:brightness-110 transition-opacity duration-500 ${
+                  active ? 'opacity-100' : 'opacity-0 absolute inset-0 pointer-events-none'
+                }`}
+              >
+                <Icon className="w-3 h-3 flex-shrink-0 motion-safe:animate-pulse" />
+                <span>{a.text}</span>
+                <span className="hidden sm:inline">— {a.cta}</span>
+              </button>
+            );
+          })}
+        </div>
 
         {/* Utility Bar — visible at every breakpoint, mobile included.
             Labels shorten below sm so all four links fit one row on a phone. */}
