@@ -49,7 +49,9 @@ const ManualGrantManager: React.FC = () => {
   const [packageId, setPackageId] = useState('');
   const [discountPct, setDiscountPct] = useState<number>(0);
   const [customDiscount, setCustomDiscount] = useState<string>('');
-  const [addPerformance, setAddPerformance] = useState(false);
+  // Retired 2026-08-25 — kept as a constant so the request shape and the
+  // historical-grant display below stay valid.
+  const addPerformance = false;
   const [is8Week, setIs8Week] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'zelle' | 'venmo' | 'check' | 'other'>('cash');
   const [notes, setNotes] = useState('');
@@ -151,7 +153,6 @@ const ManualGrantManager: React.FC = () => {
       setNotes('');
       setDiscountPct(0);
       setCustomDiscount('');
-      setAddPerformance(false);
       setIs8Week(false);
       setPackageId('');
     } catch (e: any) {
@@ -245,14 +246,13 @@ const ManualGrantManager: React.FC = () => {
             </select>
           </label>
 
+          {/* Performance add-on retired as a product (client brief 2026-08-25), so it
+              is no longer offered here either. The backend still accepts the flag so
+              historical grants keep resolving. */}
           <div className="flex items-end gap-4">
             <label className="flex items-center gap-2 text-[10px] text-stone-300 uppercase tracking-widest">
               <input type="checkbox" checked={is8Week} onChange={(e) => setIs8Week(e.target.checked)} />
               8-week bundle (×2 months, −10%)
-            </label>
-            <label className="flex items-center gap-2 text-[10px] text-stone-300 uppercase tracking-widest">
-              <input type="checkbox" checked={addPerformance} onChange={(e) => setAddPerformance(e.target.checked)} />
-              Performance add-on
             </label>
           </div>
         </div>

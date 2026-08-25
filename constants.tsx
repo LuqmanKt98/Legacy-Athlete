@@ -249,18 +249,9 @@ export const PRICING_TIERS: PricingTier[] = [
     recommended: false,
     cta: 'Subscribe'
   },
-  {
-    id: 'performance-solo',
-    name: 'PERFORMANCE SOLO',
-    price: '99',
-    description: 'Performance Add-on Only',
-    features: [
-      'Performance Training',
-      'Billed Monthly'
-    ],
-    recommended: false,
-    cta: 'Subscribe'
-  },
+  // PERFORMANCE SOLO retired 2026-08-25 alongside the checkout add-on — it was the
+  // same product sold standalone ("Performance Add-on Only"). Hidden in Firestore
+  // rather than deleted, so historical purchases still resolve their plan name.
   {
     id: 'end-summer-camp',
     name: 'HOLIDAY CAMP',

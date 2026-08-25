@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Smartphone, Clock, Sun, Sparkles, ArrowRight, ArrowUpRight, Rocket } from 'lucide-react';
+import { Calendar, Smartphone, Clock, Sun, Sparkles, ArrowRight, ArrowUpRight, Rocket, Award } from 'lucide-react';
 import { ATHLETE_APP_URL } from '../constants';
 
 interface QuickAccessHubProps {
@@ -24,6 +24,13 @@ const scrollTo = (id: string) => {
 
 const QuickAccessHub: React.FC<QuickAccessHubProps> = ({ isLoggedIn, onMemberAreaClick }) => {
   const cards: QuickCard[] = [
+    {
+      icon: <Award className="w-6 h-6" />,
+      title: '8-Wk Preseason',
+      desc: 'Complete package (Sept 14 – Nov 8)',
+      onClick: () => scrollTo('preseason'),
+      highlight: true,
+    },
     {
       icon: <Calendar className="w-6 h-6" />,
       title: 'Book Session',
@@ -70,11 +77,11 @@ const QuickAccessHub: React.FC<QuickAccessHubProps> = ({ isLoggedIn, onMemberAre
           </p>
         </div>
 
-        {/* Five cards over two mobile columns leaves a stray last card, so it
-            spans the full row below lg. */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        {/* Six cards tile evenly at both breakpoints — 3x2 on desktop, 2x3 on
+            mobile — so no stray-card span hack is needed. */}
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           {cards.map((card) => {
-            const cardClass = `group text-left border p-6 rounded-lg transition-all col-span-1 last:col-span-2 lg:last:col-span-1 ${
+            const cardClass = `group text-left border p-6 rounded-lg transition-all ${
               card.highlight
                 ? 'bg-orange-600/10 border-orange-500/40 hover:border-orange-500/70 hover:bg-orange-600/20'
                 : 'bg-stone-900/30 border-stone-800 hover:border-orange-500/50 hover:bg-stone-900/60'
