@@ -13,7 +13,7 @@ const ProgramCard: React.FC<{ program: Program; index: number }> = ({ program, i
     if (!cardRef.current) return;
 
     gsap.fromTo(cardRef.current,
-      { y: 50, opacity: 0 },
+      { y: 50 },
       {
         y: 0,
         opacity: 1,
@@ -76,7 +76,7 @@ const Programs: React.FC = () => {
   useEffect(() => {
     if (titleRef.current) {
       gsap.fromTo(titleRef.current,
-        { opacity: 0, y: 30 },
+        { y: 30 },
         {
           opacity: 1,
           y: 0,
@@ -91,7 +91,7 @@ const Programs: React.FC = () => {
     }
 
     gsap.fromTo('.schedule-item',
-      { opacity: 0, y: 20 },
+      { y: 20 },
       {
         opacity: 1,
         y: 0,

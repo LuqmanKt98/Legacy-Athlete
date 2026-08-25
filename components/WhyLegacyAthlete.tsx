@@ -40,7 +40,7 @@ const WhyLegacyAthlete: React.FC = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo('.pillar-card',
-        { opacity: 0, y: 30 },
+        { y: 30 },
         {
           opacity: 1,
           y: 0,

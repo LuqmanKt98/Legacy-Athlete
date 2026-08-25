@@ -1,8 +1,9 @@
 import React from 'react';
 import MagneticButton from './MagneticButton';
+import { scrollToSection } from '../lib/scrollToSection';
 
 const scrollTo = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  scrollToSection(id);
 };
 
 const FinalCTA: React.FC = () => {

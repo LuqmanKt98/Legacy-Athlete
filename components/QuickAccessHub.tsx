@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar, Smartphone, Clock, Sun, Sparkles, ArrowRight, ArrowUpRight, Rocket, Award } from 'lucide-react';
 import { ATHLETE_APP_URL } from '../constants';
+import { scrollToSection } from '../lib/scrollToSection';
 
 interface QuickAccessHubProps {
   isLoggedIn: boolean;
@@ -19,7 +20,7 @@ interface QuickCard {
 }
 
 const scrollTo = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  scrollToSection(id);
 };
 
 const QuickAccessHub: React.FC<QuickAccessHubProps> = ({ isLoggedIn, onMemberAreaClick }) => {

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Trophy, Zap, Shield, Sparkles } from 'lucide-react';
+import { scrollToSection } from '../lib/scrollToSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,8 +62,8 @@ const MeasurableIncreases: React.FC = () => {
 
     const ctx = gsap.context(() => {
       gsap.fromTo(".mi-header",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, scrollTrigger: { trigger: sectionRef.current, start: "top 85%" } }
+        { y: 30 },
+        { y: 0, duration: 1, scrollTrigger: { trigger: sectionRef.current, start: "top 85%" } }
       );
 
       if (prefersReducedMotion) {
@@ -72,7 +73,7 @@ const MeasurableIncreases: React.FC = () => {
           const percentEl = sectionRef.current?.querySelector(`[data-percent-id="${m.id}"]`);
           if (counterEl) counterEl.textContent = m.end.toFixed(m.id === "vertical" || m.id === "broad_jump" ? 1 : 2) + m.unit;
           if (barEl) gsap.set(barEl, { scaleX: 1 });
-          if (percentEl) gsap.set(percentEl, { opacity: 1, y: 0 });
+          if (percentEl) gsap.set(percentEl, { y: 0 });
         });
       } else {
         cohortMetrics.forEach((m) => {
@@ -82,7 +83,7 @@ const MeasurableIncreases: React.FC = () => {
           if (!counterEl || !barEl || !percentEl) return;
 
           gsap.set(barEl, { scaleX: 0, transformOrigin: "left" });
-          gsap.set(percentEl, { opacity: 0, y: 12 });
+          gsap.set(percentEl, { y: 12 });
 
           const countObj = { val: m.start };
           const tl = gsap.timeline({
@@ -99,7 +100,7 @@ const MeasurableIncreases: React.FC = () => {
             }
           })
           .to(barEl, { scaleX: 1, duration: 1.4, ease: "expo.out" }, "-=1.6")
-          .to(percentEl, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.3");
+          .to(percentEl, { y: 0, duration: 0.6, ease: "power2.out" }, "-=0.3");
         });
       }
     }, sectionRef);
@@ -152,7 +153,9 @@ const MeasurableIncreases: React.FC = () => {
                 />
               </div>
 
-              <div data-percent-id={m.id} className="flex items-center justify-between opacity-0 translate-y-3">
+              {/* No opacity-0 here — the entrance animation no longer touches
+                  opacity, so a hidden default would never be revealed. */}
+              <div data-percent-id={m.id} className="flex items-center justify-between translate-y-3">
                 <span className="text-[9px] text-stone-500 uppercase tracking-widest font-semibold">Cohort Progression</span>
                 <span className="text-[10px] bg-orange-600/10 border border-orange-500/20 px-3 py-1 text-orange-500 font-bold uppercase tracking-wider rounded-full">
                   {m.improvement}
@@ -170,7 +173,7 @@ const MeasurableIncreases: React.FC = () => {
             </p>
           </div>
           <button
-            onClick={() => document.getElementById('assessment')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => scrollToSection('assessment')}
             className="text-xs font-bold uppercase tracking-widest border border-orange-500 text-orange-500 px-8 py-4 rounded hover:bg-orange-600 hover:text-white hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex-shrink-0 cursor-pointer bg-orange-600/5"
           >
             Claim Free Assessment Session

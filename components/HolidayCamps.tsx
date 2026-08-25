@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Calendar, Clock, Check, ArrowRight, Sun } from 'lucide-react';
+import { scrollToSection } from '../lib/scrollToSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,7 +82,7 @@ const HolidayCamps: React.FC<HolidayCampsProps> = ({ onSelectCamp }) => {
 
   const handleRSVP = () => {
     onSelectCamp(EVENT_PLAN_ID, `${selectedCamp.name} — ${selectedCamp.date}`);
-    document.getElementById('payment')?.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection('payment');
   };
 
   return (

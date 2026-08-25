@@ -23,15 +23,15 @@ const Gallery: React.FC = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(".gallery-header",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, scrollTrigger: { trigger: sectionRef.current, start: "top 85%" } }
+        { y: 30 },
+        { y: 0, duration: 1, scrollTrigger: { trigger: sectionRef.current, start: "top 85%" } }
       );
 
       if (galleryRef.current) {
         const items = galleryRef.current.querySelectorAll('.gallery-item');
         gsap.fromTo(items,
-          { opacity: 0, y: 40, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: galleryRef.current, start: "top 80%" } }
+          { y: 40, scale: 0.95 },
+          { y: 0, scale: 1, duration: 0.8, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: galleryRef.current, start: "top 80%" } }
         );
       }
     }, sectionRef);

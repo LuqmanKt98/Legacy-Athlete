@@ -4,6 +4,7 @@ import { db, auth } from '../lib/firebase';
 import { format, isAfter } from 'date-fns';
 import { focusColor } from '../lib/focusColor';
 import { CalendarClock, LayoutDashboard, Clock } from 'lucide-react';
+import { scrollToSection } from '../lib/scrollToSection';
 
 interface Booking {
   id: string;
@@ -13,7 +14,7 @@ interface Booking {
 }
 
 const scrollTo = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  scrollToSection(id);
 };
 
 interface MemberPortalProps {

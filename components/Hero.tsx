@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MagneticButton from './MagneticButton';
 import PreseasonCountdown from './PreseasonCountdown';
 import { PRESEASON_DATES, PRESEASON_START } from '../constants';
+import { scrollToSection } from '../lib/scrollToSection';
 
 const Hero: React.FC = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -195,7 +196,7 @@ const Hero: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full sm:w-auto">
             <MagneticButton
               className="w-full sm:w-auto !px-12 !py-5 text-lg !bg-orange-600 !text-white hover:!bg-orange-500 shadow-[0_0_60px_rgba(234,88,12,0.25)]"
-              onClick={() => document.getElementById('preseason')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => scrollToSection('preseason')}
             >
               JOIN THE CHALLENGE
             </MagneticButton>
@@ -203,7 +204,7 @@ const Hero: React.FC = () => {
             <MagneticButton
               type="secondary"
               className="w-full sm:w-auto !px-12 !py-5 text-lg"
-              onClick={() => document.getElementById('assessment')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => scrollToSection('assessment')}
             >
               BOOK FREE ASSESSMENT
             </MagneticButton>

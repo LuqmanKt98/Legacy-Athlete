@@ -8,6 +8,7 @@ import {
   PRESEASON_LEAGUE_PRICE,
   PRESEASON_LEAGUE_REGULAR,
 } from '../constants';
+import { scrollToSection } from '../lib/scrollToSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,7 +64,7 @@ const PreseasonBundle: React.FC<PreseasonBundleProps> = ({ onSelectPlan }) => {
     const planId = withLeague ? `${tier.id}-league` : tier.id;
     const label = `8-Week Preseason Bundle (${tier.frequency})${withLeague ? ' + Fall 3v3 Prep League' : ''} — ${PRESEASON_DATES}`;
     onSelectPlan(planId, label);
-    document.getElementById('payment')?.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection('payment');
   };
 
   const money = (n: number) => `$${n.toFixed(2).replace(/\.00$/, '')}`;

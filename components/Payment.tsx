@@ -321,7 +321,7 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
   }
 
   return (
-    <section id="payment" ref={sectionRef} className="py-32 px-8 bg-black border-t border-stone-900">
+    <section id="payment" ref={sectionRef} className="py-32 px-8 bg-black border-t border-stone-900 scroll-mt-40">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
           

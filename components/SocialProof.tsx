@@ -10,7 +10,7 @@ const SocialProof: React.FC = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo('.proof-card',
-        { opacity: 0, y: 30 },
+        { y: 30 },
         {
           opacity: 1,
           y: 0,

@@ -41,7 +41,7 @@ const Roadmap: React.FC = () => {
     // Title Animation
     if (titleRef.current) {
       gsap.fromTo(titleRef.current,
-        { opacity: 0, y: 30 },
+        { y: 30 },
         {
           opacity: 1,
           y: 0,
@@ -75,7 +75,7 @@ const Roadmap: React.FC = () => {
 
     stepEls.forEach((step, i) => {
       gsap.fromTo(step,
-        { opacity: 0, x: i % 2 === 0 ? -30 : 30 },
+        { x: i % 2 === 0 ? -30 : 30 },
         { 
           opacity: 1, 
           x: 0, 

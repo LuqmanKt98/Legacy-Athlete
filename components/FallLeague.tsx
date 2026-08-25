@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Check, Trophy, Users, Shield, Calendar, ArrowRight, Flame } from 'lucide-react';
+import { scrollToSection } from '../lib/scrollToSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,21 +29,21 @@ const FallLeague: React.FC<FallLeagueProps> = ({ onSelectPlan }) => {
     const ctx = gsap.context(() => {
       if (introRef.current) {
         gsap.fromTo(introRef.current,
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 1.2, ease: "power4.out", scrollTrigger: { trigger: introRef.current, start: "top 85%" } }
+          { y: 40 },
+          { y: 0, duration: 1.2, ease: "power4.out", scrollTrigger: { trigger: introRef.current, start: "top 85%" } }
         );
       }
       if (benefitsRef.current) {
         const cards = benefitsRef.current.querySelectorAll('.benefit-card');
         gsap.fromTo(cards,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: "power3.out", scrollTrigger: { trigger: benefitsRef.current, start: "top 80%" } }
+          { y: 30 },
+          { y: 0, duration: 0.8, stagger: 0.2, ease: "power3.out", scrollTrigger: { trigger: benefitsRef.current, start: "top 80%" } }
         );
       }
       if (detailsRef.current && registerCardRef.current) {
         gsap.fromTo([detailsRef.current, registerCardRef.current],
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 1.0, stagger: 0.2, ease: "power3.out", scrollTrigger: { trigger: detailsRef.current, start: "top 80%" } }
+          { y: 40 },
+          { y: 0, duration: 1.0, stagger: 0.2, ease: "power3.out", scrollTrigger: { trigger: detailsRef.current, start: "top 80%" } }
         );
       }
     }, sectionRef);
@@ -52,7 +53,7 @@ const FallLeague: React.FC<FallLeagueProps> = ({ onSelectPlan }) => {
 
   const handleRegister = () => {
     onSelectPlan('fall-3v3');
-    document.getElementById('payment')?.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection('payment');
   };
 
   return (

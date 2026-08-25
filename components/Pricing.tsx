@@ -6,6 +6,7 @@ import { db } from '../lib/firebase';
 import { PRICING_TIERS } from '../constants';
 import { PricingTier } from '../types';
 import MagneticButton from './MagneticButton';
+import { scrollToSection } from '../lib/scrollToSection';
 
 interface PricingProps {
   onSelectPlan: (planId: string) => void;
@@ -51,7 +52,7 @@ const Pricing: React.FC<PricingProps> = ({ onSelectPlan }) => {
     // Title Animation
     if (titleRef.current) {
       gsap.fromTo(titleRef.current,
-        { opacity: 0, y: 30 },
+        { y: 30 },
         {
           opacity: 1,
           y: 0,
@@ -69,7 +70,7 @@ const Pricing: React.FC<PricingProps> = ({ onSelectPlan }) => {
     if (!cards || cards.length === 0) return;
 
     gsap.fromTo(cards, 
-      { opacity: 0, y: 50 },
+      { y: 50 },
       {
         opacity: 1,
         y: 0,
@@ -86,7 +87,7 @@ const Pricing: React.FC<PricingProps> = ({ onSelectPlan }) => {
 
   const handleSelectPlan = (planId: string) => {
     onSelectPlan(planId);
-    document.getElementById('payment')?.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection('payment');
   };
 
   return (

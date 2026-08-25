@@ -2,6 +2,7 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { ATHLETE_APP_URL } from '../constants';
+import { scrollToSection } from '../lib/scrollToSection';
 
 interface FooterProps {
   onPortalClick?: () => void;
@@ -12,7 +13,7 @@ const COACH_EMAIL = 'Mw@legacyathlete.fit';
 
 const scrollTo = (id: string) => (e: React.MouseEvent) => {
   e.preventDefault();
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  scrollToSection(id);
 };
 
 const Footer: React.FC<FooterProps> = ({ onPortalClick }) => {

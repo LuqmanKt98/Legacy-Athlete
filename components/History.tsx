@@ -19,12 +19,12 @@ const History: React.FC = () => {
     });
 
     tl.fromTo(imageRef.current,
-      { scale: 0.9, opacity: 0, filter: 'blur(10px)' },
-      { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 1.5, ease: "power2.out" }
+      { scale: 0.9, filter: 'blur(10px)' },
+      { scale: 1, filter: 'blur(0px)', duration: 1.5, ease: "power2.out" }
     )
     .fromTo(textRef.current,
-      { x: 50, opacity: 0 },
-      { x: 0, opacity: 1, duration: 1, ease: "power3.out" },
+      { x: 50 },
+      { x: 0, duration: 1, ease: "power3.out" },
       "-=1"
     );
     

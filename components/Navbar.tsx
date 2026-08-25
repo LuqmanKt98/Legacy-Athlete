@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { Menu, X, MessageCircle, MapPin, Clock, Smartphone, ArrowUpRight, Flame, CalendarDays, Sun } from 'lucide-react';
 import { ATHLETE_APP_URL } from '../constants';
+import { scrollToSection } from '../lib/scrollToSection';
 
 // Three announcements share one strip rather than stacking three bars — the fixed
 // header is already ~150px on mobile and a third bar would eat the hero.
@@ -76,7 +77,7 @@ const Navbar: React.FC<NavbarProps> = ({ onPortalClick, onLoginClick, isLoggedIn
     setIsOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      scrollToSection(id);
     }
   };
 
@@ -203,7 +204,7 @@ const Navbar: React.FC<NavbarProps> = ({ onPortalClick, onLoginClick, isLoggedIn
               </button>
             )}
             <button
-              onClick={() => document.getElementById('assessment')?.scrollIntoView({behavior: 'smooth'})}
+              onClick={() => scrollToSection('assessment')}
               className="hidden sm:block text-[10px] uppercase tracking-[0.3em] font-medium border border-orange-600/60 text-orange-500 px-6 py-2 rounded-full hover:bg-orange-600 hover:text-white transition-all duration-300"
             >
               Book Assessment
@@ -266,7 +267,7 @@ const Navbar: React.FC<NavbarProps> = ({ onPortalClick, onLoginClick, isLoggedIn
           <button
             onClick={() => {
               setIsOpen(false);
-              document.getElementById('assessment')?.scrollIntoView({behavior: 'smooth'});
+              scrollToSection('assessment');
             }}
             className="text-[10px] uppercase tracking-[0.3em] font-medium border border-orange-600 text-orange-500 px-10 py-4 rounded-full"
           >
