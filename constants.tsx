@@ -271,7 +271,7 @@ export const PRICING_TIERS: PricingTier[] = [
     id: 'fall-3v3',
     name: 'FALL 3V3 LEAGUE',
     price: '195',
-    description: '6 Weeks: Sept 25 – Oct 30, 2026 • Flat Rate / Player',
+    description: '6 Weeks: Sept 27 – Nov 1, 2026 • Flat Rate / Player',
     features: [
       '5 Weeks of Competitive Doubleheaders',
       '1 Week Single-Elimination Playoffs',

@@ -21,7 +21,7 @@ const FallLeague: React.FC<FallLeagueProps> = ({ onSelectPlan }) => {
     name: "Middle School Prep Division",
     age: "Grades 6th – 8th",
     focus: "Skill translation, spacing fundamentals, and high-frequency touches before school team selections.",
-    time: "Fridays | 6:30 PM – 8:30 PM",
+    time: "Sundays | 2:00 PM",
     spotsLeft: 6
   };
 
@@ -141,7 +141,7 @@ const FallLeague: React.FC<FallLeagueProps> = ({ onSelectPlan }) => {
             </div>
 
             <p className="text-[9px] text-stone-600 uppercase tracking-widest mt-6">
-              * League gameplay is hosted on Friday evenings. Full rosters and matchup schedules are finalized one week before kickoff.
+              * League gameplay is hosted on Sunday afternoons. Full rosters and matchup schedules are finalized one week before kickoff.
             </p>
           </div>
 
@@ -158,7 +158,7 @@ const FallLeague: React.FC<FallLeagueProps> = ({ onSelectPlan }) => {
                 <h3 className="text-3xl font-athletic text-white uppercase mb-2">FALL 3V3 PREP</h3>
                 <p className="text-[10px] text-stone-400 uppercase tracking-[0.2em] flex items-center gap-2">
                   <Calendar className="w-3.5 h-3.5 text-stone-500" />
-                  6 Weeks: Sept 25 – Oct 30, 2026
+                  6 Weeks: Sept 27 – Nov 1, 2026
                 </p>
               </div>
 

@@ -171,7 +171,7 @@ const PreseasonBundle: React.FC<PreseasonBundleProps> = ({ onSelectPlan }) => {
             <div>
               <h3 className="font-athletic text-2xl md:text-3xl text-white uppercase">3v3 Fall Prep League Add-On</h3>
               <p className="text-stone-500 text-xs uppercase tracking-widest mt-1">
-                Bundle the 6-week Friday night league at a discounted rate.
+                Bundle the 6-week Sunday afternoon league at a discounted rate.
               </p>
             </div>
           </div>
@@ -238,7 +238,7 @@ const PreseasonBundle: React.FC<PreseasonBundleProps> = ({ onSelectPlan }) => {
               <div className="flex justify-between items-start gap-4">
                 <div>
                   <p className="text-amber-400 text-sm font-medium">Fall 3v3 Prep League Add-On</p>
-                  <p className="text-stone-500 text-xs mt-0.5">6-Wk Friday Doubleheaders + Jersey</p>
+                  <p className="text-stone-500 text-xs mt-0.5">6-Wk Sunday Doubleheaders + Jersey</p>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <p className="text-amber-400 font-mono text-sm">{money(PRESEASON_LEAGUE_PRICE)}</p>
