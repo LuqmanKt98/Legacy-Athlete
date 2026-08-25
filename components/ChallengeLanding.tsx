@@ -11,7 +11,7 @@ const getApiUrl = (endpoint: string) => (API_BASE ? `${API_BASE}/${endpoint}` : 
  * Deliberately stripped down: no site nav, no pricing tiers to compare, no login,
  * no payment. Cold ad traffic gets one job — leave a name and email — because the
  * client is paying per click and every extra step is paid traffic walking away.
- * Enrolment and payment happen afterwards, once the coach has the lead.
+ * Enrollment and payment happen afterwards, once the coach has the lead.
  */
 const FREQUENCIES = ['Not sure yet', ...PRESEASON_TIERS.map((t) => t.frequency)];
 
@@ -153,7 +153,7 @@ const ChallengeLanding: React.FC = () => {
                   href="/#preseason"
                   className="inline-flex items-center gap-2 bg-orange-600 hover:bg-orange-500 text-white font-bold uppercase tracking-widest text-[10px] px-8 py-4 rounded-sm transition-colors"
                 >
-                  See Pricing &amp; Enrol <ArrowRight className="w-3.5 h-3.5" />
+                  See Pricing &amp; Enroll <ArrowRight className="w-3.5 h-3.5" />
                 </a>
               </div>
             ) : (

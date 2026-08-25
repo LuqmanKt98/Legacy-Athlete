@@ -356,7 +356,7 @@ const Payment: React.FC<PaymentProps> = ({ initialPlanId, initialEventLabel, onL
                 </select>
 
                 {/* Performance Add-on removed at the client's request (brief 2026-08-25).
-                    The add-on for preseason enrolments is now the Fall 3v3 Prep League,
+                    The add-on for preseason enrollments is now the Fall 3v3 Prep League,
                     selected in the Preseason Bundle section rather than here. */}
                 <div className="space-y-3 pt-4 border-t border-stone-800/50">
                   {selectedPlan.id !== 'drop-in' && !isEvent && (

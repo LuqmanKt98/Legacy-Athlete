@@ -137,7 +137,7 @@ const Hero: React.FC = () => {
           className="w-full h-full object-cover object-center"
         />
 
-        {/* Darkest through the centre, where the headline sits and where the
+        {/* Darkest through the center, where the headline sits and where the
             poster carries its own LEGACY wordmark. Keeps the athletes at the
             edges readable without two competing wordmarks stacked up. */}
         <div

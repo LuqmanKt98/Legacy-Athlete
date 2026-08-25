@@ -669,7 +669,7 @@ function buildChallengeLeadConfirmationEmail(parentName, athleteName) {
     <div class="row" style="border-bottom:none;"><span class="lbl">Format</span><span class="val">1x, 2x or 3x per week</span></div>
   </div>
   <div class="cta-section">
-    <p style="color:#a8a29e;font-size:13px;margin:0 0 20px;">Want to lock your spot in now? You can enrol directly and choose your training frequency.</p>
+    <p style="color:#a8a29e;font-size:13px;margin:0 0 20px;">Want to lock your spot in now? You can enroll directly and choose your training frequency.</p>
     <a href="${baseUrl}/#preseason" class="cta-btn">View the Challenge</a>
   </div>
   <div class="footer">

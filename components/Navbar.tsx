@@ -11,7 +11,7 @@ const ANNOUNCEMENTS = [
     id: 'preseason',
     icon: CalendarDays,
     text: '8-Week Preseason Bundle — Sept 14 to Nov 8',
-    cta: 'Enrol Now',
+    cta: 'Enroll Now',
   },
   {
     id: 'fall-3v3',
@@ -140,7 +140,7 @@ const Navbar: React.FC<NavbarProps> = ({ onPortalClick, onLoginClick, isLoggedIn
             </button>
 
             {/* Live pulse marks this as the one link that leaves the site — it's
-                the members' destination, so it gets the only colour in the bar. */}
+                the members' destination, so it gets the only color in the bar. */}
             <a
               href={ATHLETE_APP_URL}
               target="_blank"
