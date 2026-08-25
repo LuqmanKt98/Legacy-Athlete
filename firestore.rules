@@ -67,6 +67,14 @@ service cloud.firestore {
       allow write: if false; // Cloud Functions only (submitAssessment)
     }
 
+    // ── 8-Week Challenge ad leads: admin read-only; backend-only writes ───────
+    //    (submitChallengeLead). Kept separate from `assessments` so paid-ad
+    //    performance can be measured on its own.
+    match /challenge_leads/{leadId} {
+      allow read:  if isAdmin();
+      allow write: if false; // Cloud Functions only
+    }
+
     // ── Settings (calendar_auth, shared_calendar, etc.): admin only ───────────
     match /settings/{docId} {
       allow read:  if isAdmin();

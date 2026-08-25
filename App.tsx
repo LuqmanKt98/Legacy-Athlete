@@ -32,6 +32,7 @@ import Location from './components/Location';
 import Payment from './components/Payment';
 import FinalCTA from './components/FinalCTA';
 import CancellationPage from './components/CancellationPage';
+import ChallengeLanding from './components/ChallengeLanding';
 import { useAuth } from './hooks/useAuth';
 import { auth } from './lib/firebase';
 import { useAdminClaim } from './hooks/useAdminClaim';
@@ -116,6 +117,12 @@ function App() {
 
   if (typeof window !== 'undefined' && window.location.pathname === '/cancel') {
     return <CancellationPage />;
+  }
+
+  // Dedicated paid-ad landing page. Checked before the auth gate below so ad
+  // traffic never hits a loading spinner or a login prompt on arrival.
+  if (typeof window !== 'undefined' && window.location.pathname.replace(/\/$/, '') === '/challenge') {
+    return <ChallengeLanding />;
   }
 
   if (loading) {

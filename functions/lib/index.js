@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendWelcomeEmail = exports.adminRevokePackage = exports.adminGrantPackage = exports.setAdminClaim = exports.stripeWebhook = exports.getSharedCalendarIdEndpoint = exports.getSharedCalendarEvents = exports.submitAssessment = exports.checkCancellation = exports.confirmPlanPurchase = exports.cancelBooking = exports.createBooking = exports.createPaymentIntent = exports.getSessions = exports.getCalendarStatus = exports.exchangeCalendarToken = void 0;
+exports.sendWelcomeEmail = exports.adminRevokePackage = exports.adminGrantPackage = exports.setAdminClaim = exports.stripeWebhook = exports.getSharedCalendarIdEndpoint = exports.getSharedCalendarEvents = exports.submitChallengeLead = exports.submitAssessment = exports.checkCancellation = exports.confirmPlanPurchase = exports.cancelBooking = exports.createBooking = exports.createPaymentIntent = exports.getSessions = exports.getCalendarStatus = exports.exchangeCalendarToken = void 0;
 const functions = __importStar(require("firebase-functions"));
 const functionsV1 = __importStar(require("firebase-functions/v1"));
 const admin = __importStar(require("firebase-admin"));
@@ -625,6 +625,90 @@ function buildCoachAssessmentEmail(parentName, parentEmail, parentPhone, athlete
     ${notes ? `<div style="margin-top:16px;"><span class="lbl">Notes</span><p style="color:#d4ccc8;font-size:12px;margin-top:6px;">${notes}</p></div>` : ""}
   </div>
   <div class="f"><p>Legacy Athlete Assessment Requests — Auto-generated notification. Add ${athleteName} to a cohort once scheduled.</p></div>
+</div>
+</body>
+</html>`;
+}
+function buildChallengeLeadConfirmationEmail(parentName, athleteName) {
+    const baseUrl = process.env.APP_BASE_URL || "https://legacyathlete.fit";
+    const who = athleteName || "your athlete";
+    return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8-Week Preseason Challenge – Legacy Athlete</title>
+<style>
+  body { margin:0; padding:0; background:#000; font-family:'Helvetica Neue',Arial,sans-serif; }
+  .container { max-width:560px; margin:0 auto; background:#0a0a0a; border:1px solid #1c1917; }
+  .header { background:#000; padding:40px 40px 24px; border-bottom:1px solid #1c1917; }
+  .logo { font-size:11px; letter-spacing:0.4em; color:#ea580c; text-transform:uppercase; margin-bottom:8px; }
+  .headline { font-size:28px; font-weight:700; color:#fff; letter-spacing:-0.02em; line-height:1.2; margin:0; }
+  .badge { display:inline-block; background:#ea580c; color:#fff; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; padding:4px 12px; margin-top:16px; }
+  .body-section { padding:32px 40px; }
+  .greeting { color:#a8a29e; font-size:14px; line-height:1.6; margin-bottom:24px; }
+  .row { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #1c1917; }
+  .lbl { font-size:10px; color:#57534e; text-transform:uppercase; letter-spacing:0.15em; }
+  .val { font-size:13px; color:#fff; font-weight:600; text-align:right; }
+  .cta-section { padding:24px 40px 32px; background:#111; border-top:1px solid #1c1917; text-align:center; }
+  .cta-btn { display:inline-block; background:#ea580c; color:#fff; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; padding:14px 28px; text-decoration:none; font-weight:bold; }
+  .footer { padding:24px 40px; border-top:1px solid #1c1917; }
+  .footer-text { color:#44403c; font-size:10px; line-height:1.6; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">Legacy Athlete</div>
+    <h1 class="headline">YOU'RE ON<br>THE LIST.</h1>
+    <div class="badge">✓ 8-Week Preseason Challenge</div>
+  </div>
+  <div class="body-section">
+    <p class="greeting">Hey ${parentName}, thanks for your interest — we've got ${who} down for the 8-Week Preseason Challenge. Coach Mark will reach out personally to get you set up.</p>
+    <div class="row"><span class="lbl">Program</span><span class="val">8-Week Preseason Challenge</span></div>
+    <div class="row"><span class="lbl">Dates</span><span class="val">Sept 14 – Nov 8, 2026</span></div>
+    <div class="row"><span class="lbl">Ages</span><span class="val">11–18 · All Levels</span></div>
+    <div class="row" style="border-bottom:none;"><span class="lbl">Format</span><span class="val">1x, 2x or 3x per week</span></div>
+  </div>
+  <div class="cta-section">
+    <p style="color:#a8a29e;font-size:13px;margin:0 0 20px;">Want to lock your spot in now? You can enrol directly and choose your training frequency.</p>
+    <a href="${baseUrl}/#preseason" class="cta-btn">View the Challenge</a>
+  </div>
+  <div class="footer">
+    <p class="footer-text">© Legacy Athlete · Pilsen, Chicago.<br>You're receiving this because you requested details about the 8-Week Preseason Challenge.</p>
+  </div>
+</div>
+</body>
+</html>`;
+}
+function buildCoachChallengeLeadEmail(parentName, email, phone, athleteName, frequency, source) {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8">
+<style>
+  body { margin:0; background:#000; font-family:'Helvetica Neue',Arial,sans-serif; }
+  .c { max-width:560px; margin:0 auto; background:#0a0a0a; border:1px solid #1c1917; }
+  .h { background:#111; padding:32px 40px; border-bottom:1px solid #1c1917; }
+  .tag { font-size:9px; letter-spacing:0.4em; color:#ea580c; text-transform:uppercase; }
+  h1 { font-size:22px; color:#fff; margin:8px 0 0; }
+  .b { padding:32px 40px; }
+  .row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #1c1917; }
+  .lbl { font-size:10px; color:#57534e; text-transform:uppercase; letter-spacing:0.15em; }
+  .val { font-size:13px; color:#fff; font-weight:600; text-align:right; }
+  .f { padding:20px 40px; border-top:1px solid #1c1917; }
+  .f p { color:#44403c; font-size:10px; }
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="h"><div class="tag">🔥 New Challenge Lead (Paid Ads)</div><h1>${parentName}</h1></div>
+  <div class="b">
+    <div class="row"><span class="lbl">Parent Name</span><span class="val">${parentName}</span></div>
+    <div class="row"><span class="lbl">Email</span><span class="val">${email}</span></div>
+    <div class="row"><span class="lbl">Phone</span><span class="val">${phone || "—"}</span></div>
+    <div class="row"><span class="lbl">Athlete</span><span class="val">${athleteName || "—"}</span></div>
+    <div class="row"><span class="lbl">Interested In</span><span class="val" style="color:#ea580c;">${frequency || "Not specified"}</span></div>
+    <div class="row" style="border-bottom:none;"><span class="lbl">Source</span><span class="val">${source}</span></div>
+  </div>
+  <div class="f"><p>Legacy Athlete — 8-Week Preseason Challenge lead. Follow up fast: paid-ad leads convert best within the first hour.</p></div>
 </div>
 </body>
 </html>`;
@@ -1518,6 +1602,85 @@ exports.submitAssessment = functions.https.onRequest((req, res) => {
         catch (error) {
             console.error("submitAssessment error:", error);
             res.status(500).json({ error: "Failed to submit assessment request", details: error.message });
+        }
+    });
+});
+// ─── FUNCTION 6c: submitChallengeLead ────────────────────────────────────────
+// Lead capture for the 8-Week Preseason Challenge ad campaign. Deliberately the
+// lowest-friction endpoint on the site: no auth, no payment, and only name +
+// email are required — cold traffic from paid ads abandons anything longer.
+//
+// Kept separate from `assessments` on purpose: these leads are what the ad spend
+// is measured against, so mixing them into the assessment funnel would make the
+// campaign impossible to evaluate.
+exports.submitChallengeLead = functions.https.onRequest((req, res) => {
+    applyCors(req, res, async () => {
+        if (req.method !== "POST" && req.method !== "OPTIONS") {
+            res.status(405).json({ error: "Method not allowed" });
+            return;
+        }
+        const { parentName, email, phone, athleteName, frequency, source } = req.body || {};
+        if (!parentName || !email) {
+            res.status(400).json({ error: "Name and email are required" });
+            return;
+        }
+        if (!isValidEmail(String(email))) {
+            res.status(400).json({ error: "Please enter a valid email address" });
+            return;
+        }
+        const safeEmail = String(email).toLowerCase().trim();
+        // Same 3-per-hour ceiling as the assessment form — enough for a genuine
+        // re-submit, low enough to blunt form spam on a public, unauthenticated endpoint.
+        const allowed = await checkRateLimit(`challenge:${safeEmail}`, 3, 3600);
+        if (!allowed) {
+            res.status(429).json({ error: "Too many requests. Please try again later." });
+            return;
+        }
+        const safeParentName = sanitizeName(String(parentName));
+        const safeAthleteName = athleteName ? sanitizeName(String(athleteName)) : "";
+        const safePhone = phone ? sanitizeName(String(phone)).slice(0, 30) : "";
+        const safeFrequency = frequency ? sanitizeName(String(frequency)).slice(0, 40) : "";
+        // Free-form campaign tag (e.g. the ad set) so leads can be attributed later.
+        const safeSource = source ? sanitizeName(String(source)).slice(0, 60) : "direct";
+        try {
+            const leadId = (0, uuid_1.v4)();
+            await db.collection("challenge_leads").doc(leadId).set({
+                id: leadId,
+                parent_name: safeParentName,
+                email: safeEmail,
+                phone: safePhone,
+                athlete_name: safeAthleteName,
+                frequency_interest: safeFrequency,
+                source: safeSource,
+                status: "new",
+                submitted_at: admin.firestore.FieldValue.serverTimestamp(),
+            });
+            try {
+                const resend = initResend();
+                await resend.emails.send({
+                    from: "Legacy Athlete <bookings@legacyathlete.fit>",
+                    to: [safeEmail],
+                    subject: "You're in — 8-Week Preseason Challenge details inside",
+                    html: buildChallengeLeadConfirmationEmail(safeParentName, safeAthleteName),
+                });
+                await resend.emails.send({
+                    from: "Legacy Athlete Leads <bookings@legacyathlete.fit>",
+                    to: COACH_NOTIFICATION_EMAILS,
+                    subject: `🔥 New Challenge Lead: ${safeParentName}${safeAthleteName ? ` (${safeAthleteName})` : ""}`,
+                    html: buildCoachChallengeLeadEmail(safeParentName, safeEmail, safePhone, safeAthleteName, safeFrequency, safeSource),
+                });
+            }
+            catch (emailErr) {
+                // Non-fatal by design: the lead is already saved, and losing a paid-ad
+                // lead because an email bounced would be far worse than a missing alert.
+                console.error("[submitChallengeLead] Email send failed (non-fatal):", emailErr.message);
+            }
+            await auditLog("challenge_lead_submitted", "public", { leadId, email: safeEmail, source: safeSource });
+            res.json({ success: true, leadId, message: "You're on the list!" });
+        }
+        catch (error) {
+            console.error("submitChallengeLead error:", error);
+            res.status(500).json({ error: "Failed to submit. Please try again.", details: error.message });
         }
     });
 });

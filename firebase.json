@@ -86,6 +86,10 @@
         "function": "submitAssessment"
       },
       {
+        "source": "/api/submitChallengeLead",
+        "function": "submitChallengeLead"
+      },
+      {
         "source": "/api/exchangeCalendarToken",
         "function": "exchangeCalendarToken"
       },

@@ -24,6 +24,19 @@ interface Booking {
   cancellation_token: string;
 }
 
+// Lead captured by the /challenge paid-ad landing page.
+interface ChallengeLead {
+  id: string;
+  parent_name: string;
+  email: string;
+  phone: string;
+  athlete_name: string;
+  frequency_interest: string;
+  source: string;
+  status: string;
+  submitted_at: Timestamp;
+}
+
 interface Assessment {
   id: string;
   athlete_name: string;
@@ -108,6 +121,49 @@ const BookingRow: React.FC<{ booking: Booking }> = ({ booking }) => {
 };
 
 // ─── Assessment Row ───────────────────────────────────────────────────────────
+// ─── Challenge Lead Row ───────────────────────────────────────────────────────
+// Email and phone are click-to-contact: these are paid-ad leads and speed of
+// follow-up is the whole point.
+const ChallengeLeadRow: React.FC<{ lead: ChallengeLead }> = ({ lead }) => {
+  const submittedAt = lead.submitted_at?.toDate();
+  return (
+    <tr className="group hover:bg-stone-900/60 transition-colors border-b border-stone-900/60">
+      <td className="py-5 pr-6">
+        <p className="text-[11px] text-stone-400 tracking-wider">
+          {submittedAt ? format(submittedAt, 'MMM d') : '—'}
+        </p>
+        <p className="text-[9px] text-stone-700 tracking-widest">
+          {submittedAt ? format(submittedAt, 'HH:mm') : ''}
+        </p>
+      </td>
+      <td className="py-5 pr-6">
+        <p className="text-[12px] text-white uppercase tracking-widest font-medium">{lead.parent_name}</p>
+      </td>
+      <td className="py-5 pr-6">
+        <a href={`mailto:${lead.email}`} className="text-[11px] text-orange-500 hover:text-orange-400 lowercase block transition-colors">
+          {lead.email}
+        </a>
+        {lead.phone && (
+          <a href={`tel:${lead.phone}`} className="text-[10px] text-stone-500 hover:text-stone-300 mt-0.5 block transition-colors">
+            {lead.phone}
+          </a>
+        )}
+      </td>
+      <td className="py-5 pr-6">
+        <p className="text-[11px] text-stone-300 uppercase tracking-wide">{lead.athlete_name || '—'}</p>
+      </td>
+      <td className="py-5 pr-6">
+        <p className="text-[10px] text-orange-600 uppercase tracking-tighter">{lead.frequency_interest || 'Not specified'}</p>
+      </td>
+      <td className="py-5 pr-6">
+        <span className="inline-flex w-fit px-2.5 py-1 text-[8px] tracking-widest uppercase rounded-sm bg-stone-800 text-stone-400">
+          {lead.source || 'direct'}
+        </span>
+      </td>
+    </tr>
+  );
+};
+
 const AssessmentRow: React.FC<{ assessment: Assessment }> = ({ assessment }) => {
   const preferredDate = assessment.preferred_date?.toDate();
   const submittedAt = assessment.submitted_at?.toDate();
@@ -155,7 +211,9 @@ const AdminPanel: React.FC = () => {
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [loading, setLoading] = useState(true);
   const [assessmentsLoading, setAssessmentsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'bookings' | 'assessments' | 'calendar' | 'schedule' | 'packages' | 'grants' | 'analytics'>('bookings');
+  const [challengeLeads, setChallengeLeads] = useState<ChallengeLead[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'bookings' | 'assessments' | 'leads' | 'calendar' | 'schedule' | 'packages' | 'grants' | 'analytics'>('bookings');
 
   const fetchBookings = useCallback(async () => {
     setLoading(true);
@@ -181,8 +239,21 @@ const AdminPanel: React.FC = () => {
     setAssessmentsLoading(false);
   }, []);
 
+  const fetchChallengeLeads = useCallback(async () => {
+    setLeadsLoading(true);
+    try {
+      const q = query(collection(db, 'challenge_leads'), orderBy('submitted_at', 'desc'));
+      const snap = await getDocs(q);
+      setChallengeLeads(snap.docs.map(d => ({ id: d.id, ...d.data() } as ChallengeLead)));
+    } catch (err) {
+      console.error('Error fetching challenge leads:', err);
+    }
+    setLeadsLoading(false);
+  }, []);
+
   useEffect(() => { fetchBookings(); }, [fetchBookings]);
   useEffect(() => { fetchAssessments(); }, [fetchAssessments]);
+  useEffect(() => { fetchChallengeLeads(); }, [fetchChallengeLeads]);
 
   const totalRevenue = bookings
     .filter(b => b.payment_status === 'paid' || b.payment_status === 'succeeded')
@@ -193,6 +264,7 @@ const AdminPanel: React.FC = () => {
   const tabs = [
     { id: 'bookings', label: 'Bookings' },
     { id: 'assessments', label: 'Assessments' },
+    { id: 'leads', label: 'Challenge Leads' },
     { id: 'schedule', label: 'Schedule' },
     { id: 'packages', label: 'Packages' },
     { id: 'grants', label: 'Manual Grants' },
@@ -369,6 +441,87 @@ const AdminPanel: React.FC = () => {
                         </thead>
                         <tbody>
                           {assessments.map(a => <AssessmentRow key={a.id} assessment={a} />)}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ── Challenge Leads Tab ── */}
+            {activeTab === 'leads' && (
+              <div className="space-y-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <Stat label="Total Leads" value={challengeLeads.length} sub="All time" />
+                  <Stat
+                    label="New"
+                    value={challengeLeads.filter(l => (l.status || 'new') === 'new').length}
+                    sub="Not yet contacted"
+                    accent
+                  />
+                  <Stat
+                    label="Today"
+                    value={challengeLeads.filter(l => {
+                      const d = l.submitted_at?.toDate();
+                      return d && (Date.now() - d.getTime()) < 24 * 60 * 60 * 1000;
+                    }).length}
+                    sub="Last 24 hours"
+                  />
+                  <Stat
+                    label="This Week"
+                    value={challengeLeads.filter(l => {
+                      const d = l.submitted_at?.toDate();
+                      return d && (Date.now() - d.getTime()) < 7 * 24 * 60 * 60 * 1000;
+                    }).length}
+                    sub="Submitted"
+                  />
+                </div>
+
+                <div className="bg-stone-950 border border-stone-800">
+                  <div className="flex justify-between items-center px-8 py-6 border-b border-stone-900">
+                    <div>
+                      <h2 className="font-athletic text-lg tracking-widest text-white">8-WEEK CHALLENGE LEADS</h2>
+                      <p className="text-[9px] text-stone-600 uppercase tracking-widest mt-1">
+                        From the /challenge ad landing page
+                      </p>
+                    </div>
+                    <button
+                      onClick={fetchChallengeLeads}
+                      className="text-[9px] text-stone-600 hover:text-white uppercase tracking-[0.3em] transition-colors flex items-center space-x-2"
+                    >
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      <span>Refresh</span>
+                    </button>
+                  </div>
+
+                  {leadsLoading ? (
+                    <div className="flex items-center justify-center py-20">
+                      <div className="w-8 h-8 border-2 border-stone-800 border-t-orange-600 rounded-full animate-spin" />
+                    </div>
+                  ) : challengeLeads.length === 0 ? (
+                    <div className="py-20 text-center">
+                      <p className="text-stone-700 text-[11px] uppercase tracking-[0.3em]">No leads yet</p>
+                      <p className="text-stone-800 text-[10px] uppercase tracking-widest mt-2">
+                        Send ad traffic to legacyathlete.fit/challenge
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="px-8 overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-stone-900">
+                            {['Submitted', 'Name', 'Contact', 'Athlete', 'Interested In', 'Source'].map(h => (
+                              <th key={h} className="text-left py-4 pr-6 text-[9px] text-stone-600 uppercase tracking-[0.3em] font-normal">
+                                {h}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {challengeLeads.map(l => <ChallengeLeadRow key={l.id} lead={l} />)}
                         </tbody>
                       </table>
                     </div>
